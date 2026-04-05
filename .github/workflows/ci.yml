@@ -1,0 +1,177 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend_dir: ${{ steps.detect.outputs.frontend_dir }}
+      backend_dir: ${{ steps.detect.outputs.backend_dir }}
+      has_frontend: ${{ steps.detect.outputs.has_frontend }}
+      has_backend: ${{ steps.detect.outputs.has_backend }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: detect
+        shell: bash
+        run: |
+          frontend_dir=""
+          backend_dir=""
+
+          if [ -f frontend/package.json ]; then
+            frontend_dir="frontend"
+          elif [ -f package.json ]; then
+            frontend_dir="."
+          fi
+
+          if [ -f backend/package.json ]; then
+            backend_dir="backend"
+          elif [ -f package.json ] && [ -z "$frontend_dir" ]; then
+            backend_dir="."
+          fi
+
+          echo "frontend_dir=$frontend_dir" >> "$GITHUB_OUTPUT"
+          echo "backend_dir=$backend_dir" >> "$GITHUB_OUTPUT"
+
+          if [ -n "$frontend_dir" ]; then
+            echo "has_frontend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_frontend=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ -n "$backend_dir" ]; then
+            echo "has_backend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_backend=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  spec-kit-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate required Spec Kit files
+        shell: bash
+        run: |
+          required_files=(
+            ".specify/extensions.yml"
+            ".github/agents/quality.gate.agent.md"
+            ".github/prompts/quality.gate.prompt.md"
+            ".github/agents/code.review.agent.md"
+            ".github/prompts/code.review.prompt.md"
+          )
+
+          for path in "${required_files[@]}"; do
+            if [ ! -f "$path" ]; then
+              echo "Missing required file: $path"
+              exit 1
+            fi
+          done
+
+  frontend-quality:
+    needs: detect
+    if: needs.detect.outputs.has_frontend == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ needs.detect.outputs.frontend_dir }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            ${{ needs.detect.outputs.frontend_dir }}/package-lock.json
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "package.json was not found in $PWD"
+            exit 1
+          fi
+
+      - name: Validate required scripts
+        shell: bash
+        run: |
+          node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json','utf8')); const required=['lint','typecheck','test']; const missing=required.filter((name)=>!pkg.scripts || !pkg.scripts[name]); if (missing.length) { console.error('Missing frontend scripts: ' + missing.join(', ')); process.exit(1); }"
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run typecheck
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm run test -- --runInBand
+
+  backend-quality:
+    needs: detect
+    if: needs.detect.outputs.has_backend == 'true' && needs.detect.outputs.backend_dir != needs.detect.outputs.frontend_dir
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ needs.detect.outputs.backend_dir }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            ${{ needs.detect.outputs.backend_dir }}/package-lock.json
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "package.json was not found in $PWD"
+            exit 1
+          fi
+
+      - name: Validate required scripts
+        shell: bash
+        run: |
+          node -e "const fs=require('fs'); const pkg=JSON.parse(fs.readFileSync('package.json','utf8')); const required=['lint','typecheck','test']; const missing=required.filter((name)=>!pkg.scripts || !pkg.scripts[name]); if (missing.length) { console.error('Missing backend scripts: ' + missing.join(', ')); process.exit(1); }"
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run typecheck
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm run test -- --runInBand
+
+  no-app-yet:
+    needs:
+      - detect
+      - spec-kit-integrity
+    if: needs.detect.outputs.has_frontend != 'true' && needs.detect.outputs.has_backend != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report current repository state
+        run: echo "No frontend/backend package.json detected yet. Spec Kit integrity checks passed."
