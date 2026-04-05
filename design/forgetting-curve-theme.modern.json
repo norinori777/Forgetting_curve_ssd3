@@ -1,0 +1,193 @@
+{
+  "source": {
+    "derivedFrom": "nori-theme.json",
+    "purpose": "Modernized theme preset for a forgetting-curve learning product",
+    "strategy": [
+      "Preserve trust and clarity from the original system",
+      "Increase visual warmth and readability for repeated daily study",
+      "Improve focus hierarchy for review scheduling and progress signals"
+    ]
+  },
+  "brand": {
+    "tone": [
+      "calm",
+      "focused",
+      "encouraging",
+      "scientific"
+    ],
+    "keywords": [
+      "learning rhythm",
+      "memory reinforcement",
+      "small daily wins"
+    ]
+  },
+  "theme": {
+    "colors": {
+      "brand": {
+        "primary": "#0f766e",
+        "primaryHover": "#0b5f58",
+        "primarySoft": "#e6f6f4",
+        "secondary": "#1f9d8f",
+        "accent": "#f59e0b",
+        "accentSoft": "#fff5e6",
+        "danger": "#d94848",
+        "dangerSoft": "#ffecec",
+        "success": "#2e9f4d",
+        "successSoft": "#eaf8ed"
+      },
+      "surface": {
+        "page": "#f7f7f2",
+        "canvas": "#fffdf7",
+        "panel": "#ffffff",
+        "panelAlt": "#f3f7f6",
+        "header": "#123b3b",
+        "headerText": "#f4f7f5"
+      },
+      "text": {
+        "strong": "#1f2a2a",
+        "body": "#334646",
+        "muted": "#5f7272",
+        "inverse": "#ffffff",
+        "link": "#0f766e"
+      },
+      "border": {
+        "default": "#d9e3e1",
+        "subtle": "#e8efed",
+        "focus": "#3eb8ad",
+        "danger": "#d94848"
+      },
+      "states": {
+        "dueNow": "#f59e0b",
+        "overdue": "#d94848",
+        "reviewed": "#2e9f4d",
+        "planned": "#1f9d8f"
+      }
+    },
+    "typography": {
+      "rootFontSize": "62.5%",
+      "families": {
+        "base": [
+          "BIZ UDPGothic",
+          "Noto Sans JP",
+          "Hiragino Kaku Gothic Pro",
+          "Meiryo",
+          "sans-serif"
+        ],
+        "display": [
+          "Oswald",
+          "BIZ UDPGothic",
+          "sans-serif"
+        ],
+        "code": [
+          "Fira Code",
+          "monospace"
+        ]
+      },
+      "weights": {
+        "regular": 400,
+        "medium": 500,
+        "bold": 700
+      },
+      "sizeScale": {
+        "2xs": "1rem",
+        "xs": "1.2rem",
+        "sm": "1.3rem",
+        "md": "1.4rem",
+        "lg": "1.6rem",
+        "xl": "2rem",
+        "2xl": "2.4rem"
+      },
+      "lineHeight": {
+        "compact": 1.35,
+        "default": 1.6,
+        "reading": 1.8
+      }
+    },
+    "spacing": {
+      "baseUnit": "4px",
+      "scale": {
+        "1": "4px",
+        "2": "8px",
+        "3": "12px",
+        "4": "16px",
+        "5": "20px",
+        "6": "24px",
+        "8": "32px",
+        "10": "40px",
+        "12": "48px",
+        "16": "64px"
+      }
+    },
+    "radii": {
+      "sm": "6px",
+      "md": "10px",
+      "lg": "16px",
+      "pill": "9999px"
+    },
+    "shadows": {
+      "panel": "0 6px 18px rgba(17, 43, 43, 0.08)",
+      "raised": "0 10px 28px rgba(17, 43, 43, 0.12)",
+      "focusRing": "0 0 0 3px rgba(62, 184, 173, 0.25)"
+    },
+    "layout": {
+      "contentMaxWidth": "1200px",
+      "readingMaxWidth": "760px",
+      "headerHeightDesktop": "64px",
+      "headerHeightMobile": "56px",
+      "breakpoints": {
+        "sm": "640px",
+        "md": "768px",
+        "lg": "1024px",
+        "xl": "1280px"
+      }
+    }
+  },
+  "components": {
+    "button": {
+      "primary": {
+        "background": "#0f766e",
+        "text": "#ffffff",
+        "hover": "#0b5f58",
+        "radius": "10px",
+        "minHeight": "40px"
+      },
+      "secondary": {
+        "background": "#ffffff",
+        "text": "#0f766e",
+        "border": "1px solid #d9e3e1",
+        "radius": "10px"
+      },
+      "danger": {
+        "background": "#d94848",
+        "text": "#ffffff"
+      }
+    },
+    "reviewCard": {
+      "background": "#ffffff",
+      "border": "1px solid #e8efed",
+      "radius": "16px",
+      "shadow": "0 6px 18px rgba(17, 43, 43, 0.08)",
+      "padding": "24px"
+    },
+    "progressBar": {
+      "track": "#e8efed",
+      "fill": "#1f9d8f",
+      "height": "8px",
+      "radius": "9999px"
+    },
+    "badge": {
+      "dueNow": {
+        "bg": "#fff5e6",
+        "text": "#f59e0b"
+      },
+      "overdue": {
+        "bg": "#ffecec",
+        "text": "#d94848"
+      },
+      "reviewed": {
+        "bg": "#eaf8ed",
+        "text": "#2e9f4d"
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@ description: Frontend development skill for React + Tailwind projects (component
 
 前提:
 - 実装・仕様・計画は原則として日本語で記述する
-- 既存のデザインシステム/コンポーネント/トークンがある場合は必ずそれを優先する
+- 既存のデザインシステム/コンポーネント/トークンとして、./design/design-tokens.mdを参照する。
 
 ## React コンポーネント分割方針
 

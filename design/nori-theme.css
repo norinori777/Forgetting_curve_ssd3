@@ -1,0 +1,116 @@
+:root {
+  /* Color tokens */
+  --color-brand-primary: #117ec6;
+  --color-brand-primary-dark: #0064a6;
+  --color-brand-primary-soft: #edf7fe;
+  --color-brand-primary-border: #b0d1f0;
+  --color-brand-secondary: #4bafc5;
+  --color-brand-secondary-soft: #eafbff;
+  --color-brand-success: #12c74b;
+  --color-brand-success-strong: #219653;
+  --color-brand-success-soft: #ebfaf0;
+  --color-brand-accent: #e9606d;
+  --color-brand-accent-soft: #fdeff0;
+  --color-brand-attention: #fbdb01;
+
+  --color-surface-page: #ffffff;
+  --color-surface-panel: #ffffff;
+  --color-surface-subtle: #f9f9f9;
+  --color-surface-muted: #f2f2f2;
+  --color-surface-header: #464c56;
+  --color-surface-header-overlay: rgba(70, 76, 86, 0.8);
+
+  --color-text-strong: #333333;
+  --color-text-body: #666666;
+  --color-text-muted: #aaaaaa;
+  --color-text-inverse: #ffffff;
+  --color-text-header: #6a7077;
+
+  --color-border-default: #dddddd;
+  --color-border-muted: #dedede;
+  --color-border-focus: #91c4ea;
+  --color-border-error: #e9606d;
+
+  --color-feedback-info-bg: #eafbff;
+  --color-feedback-info-text: #2d9cdb;
+  --color-feedback-success-bg: #ebfaf0;
+  --color-feedback-success-text: #219653;
+  --color-feedback-warning-text: #e2c501;
+  --color-feedback-error-bg: #fdeff0;
+  --color-feedback-error-text: #e9606d;
+
+  /* Typography */
+  --font-root-size: 62.5%;
+  --font-family-base: "Hiragino Kaku Gothic Pro", Osaka, Meiryo, "MS PGothic", Verdana, sans-serif;
+  --font-family-code: "Fira Code", monospace;
+  --font-family-display: Oswald, sans-serif;
+  --font-family-serif-accent: "Yuji Syuku", "Noto Serif JP", serif;
+
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+
+  --font-size-2xs: 1rem;
+  --font-size-xs: 1.1rem;
+  --font-size-sm: 1.2rem;
+  --font-size-md: 1.3rem;
+  --font-size-lg: 1.4rem;
+  --font-size-xl: 1.6rem;
+  --font-size-2xl: 2rem;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-11: 44px;
+  --space-12: 48px;
+
+  /* Radius */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+  --radius-xl: 14px;
+  --radius-pill: 9999px;
+  --radius-round: 50%;
+
+  /* Shadows */
+  --shadow-card: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  --shadow-search: 0 3px 5px rgba(0, 0, 0, 0.25), 3px 5px 8px rgba(0, 0, 0, 0.15);
+  --shadow-tooltip: 0 2px 8px 8px hsla(0, 0%, 67%, 0.6);
+  --shadow-tooltip-lg: 0 4px 16px 8px hsla(0, 0%, 67%, 0.6);
+  --shadow-error-focus: 0 0 4px 0 #e9606d;
+
+  /* Layout */
+  --layout-content-max-width: 1168px;
+  --layout-header-height-desktop: 50px;
+  --layout-header-height-mobile: 48px;
+  --layout-gutter-desktop: 24px;
+  --layout-gutter-mobile: 16px;
+
+  /* Breakpoints */
+  --breakpoint-xs: 368px;
+  --breakpoint-sm: 600px;
+  --breakpoint-sm-alt: 615px;
+  --breakpoint-md: 839px;
+  --breakpoint-md-alt: 840px;
+  --breakpoint-lg: 961px;
+  --breakpoint-xl: 1167px;
+  --breakpoint-2xl: 1380px;
+  --breakpoint-3xl: 1400px;
+  --breakpoint-4xl: 1500px;
+}
+
+/* Optional baseline utilities */
+html {
+  font-size: var(--font-root-size);
+}
+
+body {
+  color: var(--color-text-body);
+  background: var(--color-surface-page);
+  font-family: var(--font-family-base);
+}

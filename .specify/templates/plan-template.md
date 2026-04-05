@@ -19,6 +19,7 @@
 
 **Language/Version**: TypeScript 5.0  
 **Primary Dependencies**: React, Node.js, Express.js, Prisma, Tailwind CSS  
+**Design System/Theme**: design-tokens.md (`./design/design-tokens.md`)  
 **Storage**: PostgreSQL  
 **Testing**: Jest, React Testing Library  
 **Target Platform**: Web

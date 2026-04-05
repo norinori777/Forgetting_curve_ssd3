@@ -8,6 +8,7 @@
 - copilot-agent-builderを使ってみる。
 - GitHub Actionを使ったCD/CIを実現する。
 - コードレビュー用のAgentを作成してレビューをする。
+- 上位設計（全体ユースケース一覧、主要ユーザーフロー、エンティティー、画面一覧と画面遷移図、非機能要件）をGitHub Spec Kitで実施してみる。
 
 ## 実施したこと
 
@@ -222,3 +223,4 @@ speckit.implement.agent.mdには、before_implement_hooksを読み込む実装�
     - code_review_agent.md
     - code_review_prompt.md
 
+11. 全体設計をGitHub Spec Kitで作成してみる。

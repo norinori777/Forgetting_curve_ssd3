@@ -1,0 +1,414 @@
+{
+  "source": {
+    "name": "nori"
+  },
+  "brand": {
+    "character": [
+      "utility-first",
+      "trustworthy",
+      "dense-but-readable",
+      "community-q-and-a",
+      "muted-corporate-base-with-bright-cta"
+    ],
+    "visualPatterns": [
+      "fixed dark header with bright primary actions",
+      "white and light-gray surfaces for content segmentation",
+      "small-radius cards and controls",
+      "strong use of blue for actions and links",
+      "accent coral for highlighted or resolved states",
+      "green used for create/success actions"
+    ]
+  },
+  "theme": {
+    "colors": {
+      "brand": {
+        "primary": "#117ec6",
+        "primaryDark": "#0064a6",
+        "primarySoft": "#edf7fe",
+        "primaryBorder": "#b0d1f0",
+        "secondary": "#4bafc5",
+        "secondarySoft": "#eafbff",
+        "success": "#12c74b",
+        "successStrong": "#219653",
+        "successSoft": "#ebfaf0",
+        "accent": "#e9606d",
+        "accentSoft": "#fdeff0",
+        "attention": "#fbdb01"
+      },
+      "surface": {
+        "page": "#ffffff",
+        "panel": "#ffffff",
+        "subtle": "#f9f9f9",
+        "muted": "#f2f2f2",
+        "header": "#464c56",
+        "headerOverlay": "rgba(70,76,86,.8)"
+      },
+      "text": {
+        "strong": "#333333",
+        "body": "#666666",
+        "muted": "#aaaaaa",
+        "inverse": "#ffffff",
+        "header": "#6a7077"
+      },
+      "border": {
+        "default": "#dddddd",
+        "muted": "#dedede",
+        "focus": "#91c4ea",
+        "error": "#e9606d"
+      },
+      "feedback": {
+        "infoBg": "#eafbff",
+        "infoText": "#2d9cdb",
+        "successBg": "#ebfaf0",
+        "successText": "#219653",
+        "warningText": "#e2c501",
+        "errorBg": "#fdeff0",
+        "errorText": "#e9606d"
+      }
+    },
+    "typography": {
+      "rootFontSize": "62.5%",
+      "families": {
+        "base": [
+          "Hiragino Kaku Gothic Pro",
+          "Osaka",
+          "Meiryo",
+          "MS PGothic",
+          "Verdana",
+          "sans-serif"
+        ],
+        "code": [
+          "Fira Code",
+          "monospace"
+        ],
+        "display": [
+          "Oswald",
+          "sans-serif"
+        ],
+        "serifAccent": [
+          "Yuji Syuku",
+          "Noto Serif JP",
+          "serif"
+        ]
+      },
+      "weights": {
+        "regular": 400,
+        "bold": 700
+      },
+      "sizeScale": {
+        "2xs": "1rem",
+        "xs": "1.1rem",
+        "sm": "1.2rem",
+        "md": "1.3rem",
+        "lg": "1.4rem",
+        "xl": "1.6rem",
+        "2xl": "2rem"
+      },
+      "usage": {
+        "body": "1.1rem to 1.3rem",
+        "button": "1.1rem to 1.6rem",
+        "title": "1.3rem to 2rem",
+        "meta": "1rem to 1.2rem"
+      },
+      "emphasis": {
+        "buttons": "bold",
+        "titles": "bold",
+        "links": "regular to bold depending on context"
+      }
+    },
+    "spacing": {
+      "baseUnit": "4px",
+      "scale": {
+        "1": "4px",
+        "2": "8px",
+        "3": "12px",
+        "4": "16px",
+        "5": "20px",
+        "6": "24px",
+        "8": "32px",
+        "11": "44px",
+        "12": "48px"
+      },
+      "patterns": {
+        "panelPadding": "12px",
+        "containerGutterDesktop": "24px",
+        "containerGutterMobile": "16px",
+        "headerActionPaddingX": "8px to 12px",
+        "inputPaddingX": "12px",
+        "sectionGap": "16px to 24px"
+      }
+    },
+    "radii": {
+      "xs": "2px",
+      "sm": "3px",
+      "md": "4px",
+      "lg": "8px",
+      "xl": "14px",
+      "pill": "9999px",
+      "round": "50%"
+    },
+    "shadows": {
+      "card": "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)",
+      "search": "0 3px 5px rgba(0,0,0,.25), 3px 5px 8px rgba(0,0,0,.15)",
+      "tooltip": "0 2px 8px 8px hsla(0,0%,67%,.6)",
+      "tooltipLarge": "0 4px 16px 8px hsla(0,0%,67%,.6)",
+      "errorFocus": "0 0 4px 0 #e9606d",
+      "none": "none"
+    },
+    "layout": {
+      "contentMaxWidth": "1168px",
+      "header": {
+        "desktopHeight": "50px",
+        "mobileHeight": "48px",
+        "position": "fixed on desktop, relative on mobile snapshot",
+        "background": "#464c56"
+      },
+      "columns": {
+        "desktop": "two-column container",
+        "mobile": "single-column stacked"
+      },
+      "breakpoints": {
+        "xs": "368px",
+        "sm": "600px",
+        "smAlt": "615px",
+        "md": "839px",
+        "mdAlt": "840px",
+        "lg": "961px",
+        "xl": "1167px",
+        "2xl": "1380px",
+        "3xl": "1400px",
+        "4xl": "1500px"
+      }
+    }
+  },
+  "components": {
+    "button": {
+      "base": {
+        "display": "inline-flex",
+        "borderRadius": "4px",
+        "fontWeight": 700,
+        "border": "none by default",
+        "cursor": "pointer"
+      },
+      "sizes": {
+        "tiny": {
+          "minHeight": "20px",
+          "fontSize": "1.1rem",
+          "paddingX": "8px"
+        },
+        "small": {
+          "minHeight": "28px",
+          "fontSize": "1.2rem"
+        },
+        "medium": {
+          "minHeight": "36px",
+          "fontSize": "1.3rem",
+          "paddingX": "8px"
+        },
+        "large": {
+          "minHeight": "44px",
+          "fontSize": "1.4rem to 1.6rem",
+          "paddingX": "8px"
+        }
+      },
+      "variants": {
+        "primary": {
+          "background": "#117ec6",
+          "text": "#ffffff"
+        },
+        "success": {
+          "background": "#12c74b",
+          "text": "#ffffff"
+        },
+        "secondary": {
+          "background": "#4bafc5",
+          "text": "#ffffff"
+        },
+        "accent": {
+          "background": "#e9606d",
+          "text": "#ffffff"
+        },
+        "neutral": {
+          "background": "#f2f2f2",
+          "text": "#aaaaaa"
+        },
+        "outlinePrimary": {
+          "background": "#ffffff",
+          "border": "1px solid #117ec6",
+          "text": "#117ec6"
+        },
+        "outlineAccent": {
+          "background": "#ffffff",
+          "border": "1px solid #e9606d",
+          "text": "#e9606d"
+        },
+        "softPrimary": {
+          "background": "#edf7fe",
+          "border": "1px solid #b0d1f0",
+          "text": "#117ec6"
+        }
+      },
+      "patterns": [
+        "supports full-width and centered layouts",
+        "uses icon-left labels frequently",
+        "outline and filled variants share the same shape",
+        "follow or toggle states use soft blue active background"
+      ]
+    },
+    "panel": {
+      "base": {
+        "borderRadius": "4px",
+        "padding": "12px",
+        "background": "#ffffff"
+      },
+      "variants": {
+        "default": {
+          "background": "#ffffff",
+          "border": "1px solid #dddddd"
+        },
+        "subtle": {
+          "background": "#f9f9f9"
+        },
+        "muted": {
+          "background": "#f2f2f2"
+        },
+        "info": {
+          "background": "#eafbff",
+          "border": "1px solid #2d9cdb",
+          "text": "#2d9cdb"
+        },
+        "success": {
+          "background": "#ebfaf0",
+          "border": "1px solid #219653",
+          "text": "#219653"
+        },
+        "accent": {
+          "background": "#fdeff0",
+          "border": "1px solid #e9606d",
+          "text": "#e9606d"
+        },
+        "elevated": {
+          "shadow": "0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12)"
+        }
+      },
+      "header": {
+        "fontSize": "1.3rem",
+        "fontWeight": 700,
+        "marginBottom": "8px",
+        "paddingBottom": "12px",
+        "divider": "1px solid #dddddd"
+      },
+      "footer": {
+        "marginTop": "16px"
+      }
+    },
+    "input": {
+      "base": {
+        "width": "100%",
+        "borderRadius": "4px",
+        "border": "1px solid #dddddd",
+        "background": "#f9f9f9"
+      },
+      "sizes": {
+        "small": {
+          "minHeight": "28px",
+          "fontSize": "1.2rem",
+          "padding": "4px 12px"
+        },
+        "medium": {
+          "minHeight": "36px",
+          "fontSize": "1.3rem",
+          "padding": "8px 12px"
+        },
+        "large": {
+          "minHeight": "44px",
+          "fontSize": "1.4rem",
+          "padding": "10px 12px"
+        }
+      },
+      "patterns": [
+        "search inputs embed a leading icon",
+        "forms favor light-gray fields over white fields",
+        "error state uses coral border and glow"
+      ]
+    },
+    "header": {
+      "container": {
+        "heightDesktop": "50px",
+        "heightMobile": "48px",
+        "contentMaxWidth": "1168px",
+        "paddingDesktop": "0 24px",
+        "paddingMobile": "0 16px"
+      },
+      "patterns": [
+        "dark fixed frame",
+        "compact utility navigation",
+        "search present on desktop and collapsible on mobile",
+        "high-contrast green ask button"
+      ]
+    },
+    "titleBadge": {
+      "base": {
+        "display": "flex",
+        "alignItems": "center",
+        "fontWeight": 700
+      },
+      "variants": {
+        "subtle": {
+          "background": "#f9f9f9",
+          "text": "#666666",
+          "borderRadius": "4px"
+        },
+        "success": {
+          "background": "#ebfaf0",
+          "text": "#12c74b",
+          "borderRadius": "4px"
+        },
+        "secondary": {
+          "background": "#eafbff",
+          "text": "#4bafc5",
+          "borderRadius": "4px"
+        }
+      },
+      "padding": "4px 12px"
+    },
+    "link": {
+      "base": {
+        "textDecoration": "none by default",
+        "underlinedVariant": true
+      },
+      "sizes": {
+        "mini": "1rem",
+        "tiny": "1.1rem",
+        "small": "1.2rem",
+        "medium": "1.3rem",
+        "large": "1.4rem",
+        "big": "1.6rem",
+        "huge": "2rem"
+      }
+    }
+  },
+  "reuseRecommendations": {
+    "closestFit": "A knowledge product, dashboard, or q-and-a style application that needs trust, density, and clear call-to-action hierarchy.",
+    "doReuse": [
+      "small-radius controls and panels",
+      "dark utility header with bright action buttons",
+      "blue primary plus coral accent pairing",
+      "compact type scale for information-dense screens",
+      "light-gray input and panel treatment"
+    ],
+    "adaptBeforeReuse": [
+      "the dense text sizing may feel small on content-heavy mobile experiences",
+      "the full breakpoint set is irregular and may need simplification",
+      "the palette is functional but conservative, so consumer-facing products may want stronger brand differentiation"
+    ]
+  },
+  "confidence": {
+    "level": "medium-high",
+    "notes": [
+      "Values come from production HTML and CSS bundle inspection.",
+      "Some token names were normalized for reuse because the source uses hashed CSS module class names.",
+      "When multiple bundle definitions conflicted, the JSON preserves the observed range instead of pretending there was a single exact token."
+    ]
+  }
+}
