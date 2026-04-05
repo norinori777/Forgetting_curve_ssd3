@@ -1,0 +1,15 @@
+hooks:
+  before_implement:
+    - extension: quality-gate
+      enabled: true
+      optional: false
+      command: quality.gate
+      description: Lint and typecheck must pass before implementation
+      prompt: Run lint and typecheck for frontend/backend and stop on any failure
+  after_implement:
+    - extension: code-review
+      enabled: true
+      optional: true
+      command: code.review
+      description: Comprehensive code review covering constitutional compliance, test coverage, and code quality
+      prompt: Analyze PR changes against constitution, test requirements, security, and accessibility standards
