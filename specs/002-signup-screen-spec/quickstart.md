@@ -65,3 +65,59 @@
 - lint / typecheck / test が CI で成功すること
 - SC-001 判定は直近7日・母数100件以上で実施し、利用者の明示キャンセルのみ母数から除外すること
 - SC-005 判定は /auth/signup の性能試験で p95 <= 2秒 を満たすこと
+
+## 5. E2E確認手順（T036）
+
+1. 未登録メールアドレスで signup 画面を開く
+2. `email`、`password`、`passwordConfirm` を有効値で入力して送信する
+3. 201 応答とセッション開始を確認し、`/dashboard` へ遷移することを確認する
+4. 同じメールで再試行し、409 と重複メッセージ表示を確認する
+5. 1分間に 6 回連続送信して 429 と `Retry-After` を確認する
+6. セッション作成失敗シナリオ（simulate フラグ）で登録全体が失敗し、部分成功が残らないことを確認する
+
+## 6. SC-001 計測クエリと集計手順（T044）
+
+### 6.1 集計対象
+
+- 期間: 直近 7 日
+- 母数: 100 件以上
+- 除外: `signup_canceled` として明示されたイベントのみ
+
+### 6.2 例: PostgreSQL 集計クエリ
+
+```sql
+WITH latest_attempts AS (
+  SELECT
+    request_id,
+    min(CASE WHEN event = 'signup_started' THEN occurred_at END) AS started_at,
+    min(CASE WHEN event = 'signup_succeeded' THEN occurred_at END) AS succeeded_at,
+    bool_or(event = 'signup_canceled') AS canceled
+  FROM signup_metrics
+  WHERE occurred_at >= now() - interval '7 days'
+  GROUP BY request_id
+),
+eligible AS (
+  SELECT *
+  FROM latest_attempts
+  WHERE canceled = false
+)
+SELECT
+  count(*) AS attempts,
+  count(*) FILTER (
+    WHERE succeeded_at IS NOT NULL
+      AND succeeded_at <= started_at + interval '3 minutes'
+  ) AS completed_within_3m,
+  round(
+    100.0 * count(*) FILTER (
+      WHERE succeeded_at IS NOT NULL
+        AND succeeded_at <= started_at + interval '3 minutes'
+    ) / NULLIF(count(*), 0),
+    2
+  ) AS completion_rate_percent
+FROM eligible;
+```
+
+### 6.3 判定
+
+- `attempts >= 100`
+- `completion_rate_percent >= 90.00`

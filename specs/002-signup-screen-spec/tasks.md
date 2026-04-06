@@ -1,4 +1,4 @@
-# Tasks: アカウント登録画面（UC-01）
+﻿# Tasks: アカウント登録画面（UC-01）
 
 **Input**: Design documents from /specs/002-signup-screen-spec/
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/signup-registration.openapi.yaml, quickstart.md
@@ -9,9 +9,9 @@
 
 **Purpose**: 実装着手前の構成統一と共通設定
 
-- [ ] T001 フィーチャー用テスト構成を作成する backend/tests/{contract,integration,security}/auth/ と frontend/src/pages/SignupPage/
-- [ ] T002 登録機能の設定値を定義する backend/src/config/authConfig.ts
-- [ ] T003 [P] フロントエンドのAPIエンドポイント定数を定義する frontend/src/services/api/endpoints.ts
+- [x] T001 フィーチャー用テスト構成を作成する backend/tests/{contract,integration,security}/auth/ と frontend/src/pages/SignupPage/
+- [x] T002 登録機能の設定値を定義する backend/src/config/authConfig.ts
+- [x] T003 [P] フロントエンドのAPIエンドポイント定数を定義する frontend/src/services/api/endpoints.ts
 
 ---
 
@@ -21,14 +21,14 @@
 
 **⚠️ CRITICAL**: このフェーズ完了まで User Story 実装を開始しない
 
-- [ ] T004 Prisma スキーマに User/Session の制約を追加する backend/prisma/schema.prisma
-- [ ] T005 Prisma マイグレーションを作成する backend/prisma/migrations/002_signup_screen_spec/
-- [ ] T006 [P] メール正規化・パスワードハッシュの共通ユーティリティを実装する backend/src/utils/auth/credentialUtils.ts
-- [ ] T007 [P] PII を含めない認証エラーログ出力を実装する backend/src/utils/logging/authLogger.ts
-- [ ] T008 登録トランザクション用リポジトリを実装する backend/src/repositories/auth/signupRepository.ts
-- [ ] T009 登録ルートとミドルウェアの雛形を実装する backend/src/api/auth/signupRoutes.ts
-- [ ] T038 [P] HTTPアクセス拒否の契約テストを追加する backend/tests/contract/auth/signup-https-enforcement.contract.test.ts
-- [ ] T039 [P] HTTPS以外を拒否するミドルウェアと設定を実装する backend/src/api/middleware/requireHttps.ts と backend/src/api/auth/signupRoutes.ts
+- [x] T004 Prisma スキーマに User/Session の制約を追加する backend/prisma/schema.prisma
+- [x] T005 Prisma マイグレーションを作成する backend/prisma/migrations/002_signup_screen_spec/
+- [x] T006 [P] メール正規化・パスワードハッシュの共通ユーティリティを実装する backend/src/utils/auth/credentialUtils.ts
+- [x] T007 [P] PII を含めない認証エラーログ出力を実装する backend/src/utils/logging/authLogger.ts
+- [x] T008 登録トランザクション用リポジトリを実装する backend/src/repositories/auth/signupRepository.ts
+- [x] T009 登録ルートとミドルウェアの雛形を実装する backend/src/api/auth/signupRoutes.ts
+- [x] T038 [P] HTTPアクセス拒否の契約テストを追加する backend/tests/contract/auth/signup-https-enforcement.contract.test.ts
+- [x] T039 [P] HTTPS以外を拒否するミドルウェアと設定を実装する backend/src/api/middleware/requireHttps.ts と backend/src/api/auth/signupRoutes.ts
 
 **Checkpoint**: Foundation ready - User Story 実装に着手可能
 
@@ -42,18 +42,18 @@
 
 ### Tests for User Story 1 ⚠️
 
-- [ ] T010 [P] [US1] 201成功レスポンスの契約テストを追加する backend/tests/contract/auth/signup-success.contract.test.ts
-- [ ] T011 [P] [US1] 登録成功時のトランザクション統合テストを追加する backend/tests/integration/auth/signup-success.integration.test.ts
-- [ ] T012 [P] [US1] 登録成功からダッシュボード遷移までの画面統合テストを追加する frontend/src/pages/SignupPage/SignupPage.success.test.tsx
+- [x] T010 [P] [US1] 201成功レスポンスの契約テストを追加する backend/tests/contract/auth/signup-success.contract.test.ts
+- [x] T011 [P] [US1] 登録成功時のトランザクション統合テストを追加する backend/tests/integration/auth/signup-success.integration.test.ts
+- [x] T012 [P] [US1] 登録成功からダッシュボード遷移までの画面統合テストを追加する frontend/src/pages/SignupPage/SignupPage.success.test.tsx
 
 ### Implementation for User Story 1
 
-- [ ] T013 [P] [US1] 登録ドメインモデルを実装する backend/src/domains/auth/SignupModels.ts
-- [ ] T014 [US1] 24時間セッション開始を含む登録サービス成功系を実装する backend/src/services/auth/SignupService.ts
-- [ ] T015 [US1] 201応答を返すコントローラーを実装する backend/src/api/auth/signupController.ts
-- [ ] T016 [P] [US1] 登録画面の基本UIを実装する frontend/src/pages/SignupPage/index.tsx
-- [ ] T017 [P] [US1] 登録APIクライアントを実装する frontend/src/services/api/auth/signup.ts
-- [ ] T018 [US1] 成功時の遷移処理フックを実装する frontend/src/pages/SignupPage/useSignupSubmit.ts
+- [x] T013 [P] [US1] 登録ドメインモデルを実装する backend/src/domains/auth/SignupModels.ts
+- [x] T014 [US1] 24時間セッション開始を含む登録サービス成功系を実装する backend/src/services/auth/SignupService.ts
+- [x] T015 [US1] 201応答を返すコントローラーを実装する backend/src/api/auth/signupController.ts
+- [x] T016 [P] [US1] 登録画面の基本UIを実装する frontend/src/pages/SignupPage/index.tsx
+- [x] T017 [P] [US1] 登録APIクライアントを実装する frontend/src/services/api/auth/signup.ts
+- [x] T018 [US1] 成功時の遷移処理フックを実装する frontend/src/pages/SignupPage/useSignupSubmit.ts
 
 **Checkpoint**: User Story 1 単体で登録成功フローが動作する
 
@@ -67,16 +67,16 @@
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T019 [P] [US2] 400バリデーションエラー契約テストを追加する backend/tests/contract/auth/signup-validation.contract.test.ts
-- [ ] T020 [P] [US2] 入力バリデーション境界値ユニットテストを追加する frontend/src/pages/SignupPage/signupValidation.test.ts
-- [ ] T021 [P] [US2] 項目近傍エラー表示の画面テストを追加する frontend/src/pages/SignupPage/SignupPage.validation.test.tsx
+- [x] T019 [P] [US2] 400バリデーションエラー契約テストを追加する backend/tests/contract/auth/signup-validation.contract.test.ts
+- [x] T020 [P] [US2] 入力バリデーション境界値ユニットテストを追加する frontend/src/pages/SignupPage/signupValidation.test.ts
+- [x] T021 [P] [US2] 項目近傍エラー表示の画面テストを追加する frontend/src/pages/SignupPage/SignupPage.validation.test.tsx
 
 ### Implementation for User Story 2
 
-- [ ] T022 [P] [US2] フロントエンド入力バリデーションを実装する frontend/src/pages/SignupPage/signupValidation.ts
-- [ ] T023 [US2] 項目エラー表示コンポーネントを実装する frontend/src/pages/SignupPage/SignupFieldErrors.tsx
-- [ ] T024 [P] [US2] バックエンド入力検証ミドルウェアを実装する backend/src/api/auth/signupValidationMiddleware.ts
-- [ ] T025 [US2] バリデーションミドルウェアをルートへ統合する backend/src/api/auth/signupRoutes.ts
+- [x] T022 [P] [US2] フロントエンド入力バリデーションを実装する frontend/src/pages/SignupPage/signupValidation.ts
+- [x] T023 [US2] 項目エラー表示コンポーネントを実装する frontend/src/pages/SignupPage/SignupFieldErrors.tsx
+- [x] T024 [P] [US2] バックエンド入力検証ミドルウェアを実装する backend/src/api/auth/signupValidationMiddleware.ts
+- [x] T025 [US2] バリデーションミドルウェアをルートへ統合する backend/src/api/auth/signupRoutes.ts
 
 **Checkpoint**: User Story 2 単体で入力不正の送信抑止と項目エラー表示が動作する
 
@@ -90,17 +90,17 @@
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T026 [P] [US3] 409/429/500失敗系契約テストを追加する backend/tests/contract/auth/signup-failure.contract.test.ts
-- [ ] T027 [P] [US3] 失敗時UI要約と再試行導線の画面テストを追加する frontend/src/pages/SignupPage/SignupPage.failure.test.tsx
-- [ ] T028 [P] [US3] セッション作成失敗時ロールバック統合テストを追加する backend/tests/integration/auth/signup-rollback.integration.test.ts
+- [x] T026 [P] [US3] 409/429/500失敗系契約テストを追加する backend/tests/contract/auth/signup-failure.contract.test.ts
+- [x] T027 [P] [US3] 失敗時UI要約と再試行導線の画面テストを追加する frontend/src/pages/SignupPage/SignupPage.failure.test.tsx
+- [x] T028 [P] [US3] セッション作成失敗時ロールバック統合テストを追加する backend/tests/integration/auth/signup-rollback.integration.test.ts
 
 ### Implementation for User Story 3
 
-- [ ] T029 [P] [US3] 重複判定とレート制限判定サービスを実装する backend/src/services/auth/SignupGuardService.ts
-- [ ] T030 [US3] セッション失敗時ロールバック分岐を登録サービスへ実装する backend/src/services/auth/SignupService.ts
-- [ ] T031 [US3] エラーコードを利用者向け文言へ変換するマッパーを実装する frontend/src/pages/SignupPage/signupErrorMapper.ts
-- [ ] T032 [US3] 画面上部エラー要約と再試行導線コンポーネントを実装する frontend/src/pages/SignupPage/SignupErrorSummary.tsx
-- [ ] T033 [US3] ログイン画面リンクと未認証ガード遷移を実装する frontend/src/pages/SignupPage/index.tsx と frontend/src/routes/guards/requireAuth.tsx
+- [x] T029 [P] [US3] 重複判定とレート制限判定サービスを実装する backend/src/services/auth/SignupGuardService.ts
+- [x] T030 [US3] セッション失敗時ロールバック分岐を登録サービスへ実装する backend/src/services/auth/SignupService.ts
+- [x] T031 [US3] エラーコードを利用者向け文言へ変換するマッパーを実装する frontend/src/pages/SignupPage/signupErrorMapper.ts
+- [x] T032 [US3] 画面上部エラー要約と再試行導線コンポーネントを実装する frontend/src/pages/SignupPage/SignupErrorSummary.tsx
+- [x] T033 [US3] ログイン画面リンクと未認証ガード遷移を実装する frontend/src/pages/SignupPage/index.tsx と frontend/src/routes/guards/requireAuth.tsx
 
 **Checkpoint**: User Story 3 単体で失敗時の復帰導線が動作する
 
@@ -110,15 +110,15 @@
 
 **Purpose**: 複数ストーリー横断の最終仕上げ
 
-- [ ] T034 [P] OpenAPI契約と実装差分を最終同期する specs/002-signup-screen-spec/contracts/signup-registration.openapi.yaml
-- [ ] T035 [P] PII非出力のセキュリティテストを追加する backend/tests/security/auth/signup-logging.security.test.ts
-- [ ] T036 quickstart の完了条件でE2E確認手順を更新する specs/002-signup-screen-spec/quickstart.md
-- [ ] T037 lint/typecheck/test を実行して結果を記録する specs/002-signup-screen-spec/checklists/requirements.md
-- [ ] T040 [P] 登録開始/登録成功イベントを実装する frontend/src/pages/SignupPage/useSignupSubmit.ts と backend/src/api/auth/signupController.ts
-- [ ] T041 [P] 登録キャンセルイベントを実装し、SC-001母数から明示キャンセルのみ除外する判定ロジックを追加する frontend/src/pages/SignupPage/useSignupSubmit.ts と backend/src/services/auth/SignupMetricsService.ts
-- [ ] T044 [P] SC-001計測クエリと集計手順（直近7日、母数100件以上、明示キャンセル除外）を追加する specs/002-signup-screen-spec/quickstart.md
-- [ ] T042 [P] /auth/signup の性能試験（p95 <= 2秒）を追加する backend/tests/performance/auth/signup.performance.test.ts
-- [ ] T043 [P] 性能試験結果の判定基準をCI手順へ記録する specs/002-signup-screen-spec/checklists/requirements.md
+- [x] T034 [P] OpenAPI契約と実装差分を最終同期する specs/002-signup-screen-spec/contracts/signup-registration.openapi.yaml
+- [x] T035 [P] PII非出力のセキュリティテストを追加する backend/tests/security/auth/signup-logging.security.test.ts
+- [x] T036 quickstart の完了条件でE2E確認手順を更新する specs/002-signup-screen-spec/quickstart.md
+- [x] T037 lint/typecheck/test を実行して結果を記録する specs/002-signup-screen-spec/checklists/requirements.md
+- [x] T040 [P] 登録開始/登録成功イベントを実装する frontend/src/pages/SignupPage/useSignupSubmit.ts と backend/src/api/auth/signupController.ts
+- [x] T041 [P] 登録キャンセルイベントを実装し、SC-001母数から明示キャンセルのみ除外する判定ロジックを追加する frontend/src/pages/SignupPage/useSignupSubmit.ts と backend/src/services/auth/SignupMetricsService.ts
+- [x] T044 [P] SC-001計測クエリと集計手順（直近7日、母数100件以上、明示キャンセル除外）を追加する specs/002-signup-screen-spec/quickstart.md
+- [x] T042 [P] /auth/signup の性能試験（p95 <= 2秒）を追加する backend/tests/performance/auth/signup.performance.test.ts
+- [x] T043 [P] 性能試験結果の判定基準をCI手順へ記録する specs/002-signup-screen-spec/checklists/requirements.md
 
 ---
 
