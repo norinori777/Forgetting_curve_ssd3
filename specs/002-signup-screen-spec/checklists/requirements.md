@@ -33,3 +33,20 @@
 
 - Validation result: All checklist items passed in the first review iteration.
 - Items marked incomplete require spec updates before `/speckit.clarify` or `/speckit.plan`
+
+## Implementation Verification (T037 / T043)
+
+### Command Results
+
+- Frontend: `npm run lint` PASS
+- Frontend: `npm run typecheck` PASS
+- Frontend: `npm run test` PASS (`Frontend tests passed: 7`)
+- Backend: `npm run lint` PASS
+- Backend: `npm run typecheck` PASS
+- Backend: `npm run test` PASS (8/8)
+
+### CI Pass Criteria
+
+- 必須ゲート: frontend/backend の lint・typecheck・test がすべて成功すること
+- 性能ゲート: `/auth/signup` の p95 が 2 秒以下であること（`backend/tests/performance/auth/signup.performance.test.ts`）
+- マージ条件: 上記 2 ゲートが CI で成功しない限り統合不可
