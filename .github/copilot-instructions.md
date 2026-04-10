@@ -24,9 +24,9 @@ npm test; npm run lint
 TypeScript 5.0: Follow standard conventions
 
 ## Recent Changes
+- 005-scr-01-spec: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 - 004-redefine-003-scope: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 - 003-split-us-features: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
-- 002-signup-screen-spec: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 
 
 <!-- MANUAL ADDITIONS START -->

@@ -25,6 +25,7 @@ export type SignupApiResult =
 export const signup = async (payload: SignupRequest): Promise<SignupApiResult> => {
   const response = await fetch(API_ENDPOINTS.auth.signup, {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json"
     },

@@ -3,13 +3,13 @@ type RedirectDecision = {
   redirectTo?: string;
 };
 
-export const resolveRequireAuth = (isAuthenticated: boolean): RedirectDecision => {
+export const resolveRequireAuth = (isAuthenticated: boolean, requestedPath?: string): RedirectDecision => {
   if (isAuthenticated) {
     return { allow: true };
   }
 
   return {
     allow: false,
-    redirectTo: "/login"
+    redirectTo: requestedPath ? `/login?returnTo=${encodeURIComponent(requestedPath)}` : "/login"
   };
 };
