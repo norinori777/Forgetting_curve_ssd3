@@ -1,6 +1,6 @@
 ﻿# Forgetting_curve_ssd3 Development Guidelines
 
-Auto-generated from all feature plans. Last updated: 2026-04-06
+Auto-generated from all feature plans. Last updated: 2026-04-11
 
 ## Active Technologies
 - PostgreSQL (002-signup-screen-spec)
@@ -25,8 +25,8 @@ TypeScript 5.0: Follow standard conventions
 
 ## Recent Changes
 - 005-scr-01-spec: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
+- 005-scr-01-spec: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 - 004-redefine-003-scope: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
-- 003-split-us-features: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 
 
 <!-- MANUAL ADDITIONS START -->

@@ -1,3 +1,57 @@
+# Data Model: ログイン/サインアップ永続化
+
+## User
+
+- Purpose: 認証対象となる利用者アカウントを保持する
+- Fields:
+  - `id`: UUID
+  - `normalizedEmail`: 正規化済みメールアドレス、ユニーク
+  - `passwordHash`: パスワードのハッシュ値
+  - `status`: アカウント状態、既定は `active`
+  - `createdAt`: 作成日時
+- Relationships:
+  - `Session` を複数持つ
+- Validation:
+  - `normalizedEmail` は必須
+  - `passwordHash` は平文ではないこと
+
+## Session
+
+- Purpose: ログイン/サインアップ成功後の認証セッションを保持する
+- Fields:
+  - `id`: UUID
+  - `userId`: `User.id` への外部キー
+  - `issuedAt`: 発行日時
+  - `expiresAt`: 有効期限
+  - `state`: `active` などの状態
+- Relationships:
+  - 1 つの `User` に属する
+- Validation:
+  - 有効期限は発行時刻から固定 TTL で計算する
+  - `userId` が存在しないセッションは作成しない
+
+## AuthSession
+
+- Purpose: 認証成功後に返却するセッション表現
+- Fields:
+  - `userId`
+  - `issuedAt`
+  - `expiresAt`
+  - `state`
+- Relationships:
+  - `Session` レコードに対応する
+
+## State Transitions
+
+- `Session.state`: `active` → `expired` / `revoked`
+- `User.status`: `active` を既定とし、必要時のみ拡張する
+
+## Derived Rules
+
+- ログイン時はメールアドレスを正規化して検索する
+- サインアップ時は同じ正規化値で重複確認する
+- セッション TTL は 24 時間を前提に統一する
+
 # Data Model: ログイン画面（SCR-01）
 
 ## 1. LoginFormInput
