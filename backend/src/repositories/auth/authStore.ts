@@ -1,4 +1,4 @@
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient, Prisma } from "@prisma/client/index";
 import type { UserAccount, UserSession } from "../../domains/auth/SignupModels.js";
 import { prismaClient } from "../../lib/prisma.js";
 
@@ -88,7 +88,7 @@ const persistSnapshotToDatabase = async (snapshot: AuthStoreState): Promise<void
     return;
   }
 
-  await snapshot.prismaClient.$transaction(async (transaction) => {
+  await snapshot.prismaClient.$transaction(async (transaction: Prisma.TransactionClient) => {
     for (const user of snapshot.usersById.values()) {
       await transaction.user.upsert({
         where: { normalizedEmail: user.normalizedEmail },
