@@ -1,4 +1,4 @@
-import type { PrismaClient, Prisma } from "@prisma/client/index";
+import type { PrismaClientLike, PrismaSessionRecord, PrismaTransactionClientLike, PrismaUserRecord } from "../../lib/prisma.js";
 import type { UserAccount, UserSession } from "../../domains/auth/SignupModels.js";
 import { prismaClient } from "../../lib/prisma.js";
 
@@ -7,7 +7,7 @@ export type AuthStoreState = {
   usersByEmail: Map<string, UserAccount>;
   sessionsById: Map<string, UserSession>;
   persistToDatabase: boolean;
-  prismaClient?: PrismaClient;
+  prismaClient?: PrismaClientLike;
 };
 
 export const createAuthStore = (): AuthStoreState => ({
@@ -25,13 +25,7 @@ export const cloneAuthStore = (source: AuthStoreState): AuthStoreState => ({
   prismaClient: source.prismaClient
 });
 
-const mapUserRecord = (record: {
-  id: string;
-  normalizedEmail: string;
-  passwordHash: string;
-  createdAt: Date;
-  status: string;
-}): UserAccount => ({
+const mapUserRecord = (record: PrismaUserRecord): UserAccount => ({
   userId: record.id,
   normalizedEmail: record.normalizedEmail,
   passwordHash: record.passwordHash,
@@ -39,13 +33,7 @@ const mapUserRecord = (record: {
   status: record.status === "locked" ? "locked" : "active"
 });
 
-const mapSessionRecord = (record: {
-  id: string;
-  userId: string;
-  issuedAt: Date;
-  expiresAt: Date;
-  state: string;
-}): UserSession => ({
+const mapSessionRecord = (record: PrismaSessionRecord): UserSession => ({
   sessionId: record.id,
   userId: record.userId,
   issuedAt: record.issuedAt,
@@ -88,7 +76,7 @@ const persistSnapshotToDatabase = async (snapshot: AuthStoreState): Promise<void
     return;
   }
 
-  await snapshot.prismaClient.$transaction(async (transaction: Prisma.TransactionClient) => {
+  await snapshot.prismaClient.$transaction(async (transaction: PrismaTransactionClientLike) => {
     for (const user of snapshot.usersById.values()) {
       await transaction.user.upsert({
         where: { normalizedEmail: user.normalizedEmail },
