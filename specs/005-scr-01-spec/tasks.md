@@ -56,7 +56,7 @@
 ### Implementation for User Story 1
 
 - [ ] T012 [P] [US1] backend/src/repositories/auth/loginRepository.ts に DB からの user lookup と session 参照を実装する
-- [ ] T013 [US1] backend/src/services/auth/LoginService.ts と backend/src/api/auth/loginController.ts を Prisma ベースの repository に接続し、成功時の cookie と redirectTo を維持する
+- [X] T013 [US1] backend/src/services/auth/LoginService.ts と backend/src/api/auth/loginController.ts を Prisma ベースの repository に接続し、成功時の cookie と redirectTo を維持する
 - [ ] T014 [P] [US1] frontend/src/pages/LoginPage/useLoginSubmit.ts、frontend/src/pages/LoginPage/index.tsx、frontend/src/App.tsx、frontend/src/routes/guards/requireAuth.tsx を更新し、既認証時の自動リダイレクトと未認証時の `/login` 誘導を再接続する
 
 **Checkpoint**: User Story 1 単体でログイン成功フローが動作する
@@ -78,7 +78,7 @@
 ### Implementation for User Story 2
 
 - [ ] T018 [P] [US2] backend/src/repositories/auth/signupRepository.ts に DB への user 作成と session 作成を実装する
-- [ ] T019 [US2] backend/src/services/auth/SignupService.ts と backend/src/api/auth/signupController.ts を Prisma トランザクションで atomic write にする
+- [X] T019 [US2] backend/src/services/auth/SignupService.ts と backend/src/api/auth/signupController.ts を Prisma トランザクションで atomic write にする
 - [ ] T020 [P] [US2] frontend/src/pages/SignupPage/useSignupSubmit.ts と frontend/src/pages/SignupPage/index.tsx を signup API の成功/失敗レスポンスに合わせて更新する
 
 **Checkpoint**: User Story 2 単体でサインアップ永続化フローが動作する
