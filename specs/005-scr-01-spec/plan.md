@@ -1,48 +1,36 @@
-# Implementation Plan: ログイン画面（SCR-01）
+# Implementation Plan: ログイン/サインアップ永続化
 
-**Branch**: `005-scr-01-spec` | **Date**: 2026-04-06 | **Spec**: `specs/005-scr-01-spec/spec.md`
-**Input**: Feature specification from `specs/005-scr-01-spec/spec.md`
+**Branch**: `005-scr-01-spec` | **Date**: 2026-04-11 | **Spec**: [spec.md](spec.md)
+**Input**: Feature specification from `/specs/005-scr-01-spec/spec.md`
 
 ## Summary
 
-未認証ユーザーがメールアドレスとパスワードでログインし、24時間セッションを受け取ってダッシュボードへ到達できるようにする。加えて、入力不備、認証失敗、通信障害、レート制限、一時ロック、既ログイン時の自動遷移を明確に分岐させ、フロントエンドの状態管理とバックエンドの認証契約を一致させる。
+ログインとサインアップの認証経路を、現在のインメモリ実装から Prisma + PostgreSQL ベースの永続化へ寄せる。`User` と `Session` を基盤に、サインアップではユーザー作成とセッション発行を同一トランザクションで行い、ログインではユーザー参照とセッション発行を行う。仮説は、認証失敗と再試行の摩擦を減らすことで学習継続率を維持・向上できることであり、指標はログイン/サインアップ成功率、再試行後の到達率、3 秒以内のダッシュボード到達率とする。既存の API 契約と UI 挙動は維持しつつ、DB 読み込み・書き込みを本番相当の永続層に移す。
 
 ## Technical Context
 
 **Language/Version**: TypeScript 5.0  
 **Primary Dependencies**: React, Node.js, Express.js, Prisma, Tailwind CSS  
-**Design System/Theme**: [design/design-tokens.md](../../design/design-tokens.md)  
+**Design System/Theme**: [design-tokens.md](../../design/design-tokens.md)  
 **Storage**: PostgreSQL  
-**Testing**: Jest, React Testing Library, Supertest, contract tests, performance test (p95)  
+**Testing**: Jest, React Testing Library  
 **Target Platform**: Web  
-**Project Type**: Web application (frontend + backend)  
-**Performance Goals**: `/auth/login` 正常応答 p95 <= 2秒、主要認証フローの完了率を測定可能にする  
-**Constraints**: HTTPSは本番必須、開発環境ではHTTPを許容、認証失敗理由は漏洩させない、メール正規化値+IPで1分5回まで  
-**Scale/Scope**: 認証基盤の画面分割第二段として、ログイン画面1画面と関連API・ガード・通知状態を対象
+**Project Type**: Web application  
+**Performance Goals**: ログイン/サインアップの主要経路は通常の API 応答として 3 秒以内に完了可能であること  
+**Constraints**: 認証情報は平文保存しないこと、重複ユーザー登録を防止すること、失敗時に詳細な認証理由を露出しないこと  
+**Scale/Scope**: 認証関連のユーザー/セッション永続化と既存フロントエンドからの呼び出しに限定する
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Pre-Research Gate
-
-- Language: PASS（仕様・計画・成果物を日本語中心で記述）
-- Learning outcome: PASS（既存学習機能への継続アクセスを支える認証基盤として、学習継続率向上に寄与）
-- Evidence-based scheduling: PASS（復習間隔ロジックは変更せず、根拠ある認証フロー設計のみを追加）
-- User safety: PASS（失敗時は部分成功を残さず、入力値と資格情報の保護を徹底）
-- Quality gates: PASS（testing.core / frontend / backend を前提に tests-first）
-- UI work: PASS（frontend.dev と design tokens を参照）
-- Integration gate: PASS（lint/typecheck/test 成功を統合条件とする）
-
-### Post-Design Re-Check
-
-- Language: PASS
-- Learning outcome: PASS（ログイン成功後の学習継続導線を定量テスト対象に含める）
-- Evidence-based scheduling: PASS（認証機能のみの変更で、復習計算根拠には影響しない）
-- User safety: PASS（入力不備・認証失敗・ロック状態の表示を明確化）
-- Quality gates: PASS（契約・統合・境界値・失敗系を research/quickstart に反映）
-- UI work: PASS（loading/error/lock/redirect 状態を設計化）
-- Integration gate: PASS（contracts と quickstart で判定手順を定義）
+- Language: Write plan/spec/tasks primarily in Japanese
+- Learning outcome: This feature does not change spaced-repetition logic; no review-interval hypothesis is introduced
+- Evidence-based scheduling: Not applicable because review interval logic is unchanged
+- User safety: Protect auth data with transaction boundaries and duplicate-email checks
+- Quality gates: Add and maintain tests for login/signup repository and service paths before implementation
+- UI work: Frontend guidance is relevant only if UI copy or state handling changes; keep the plan backend-focused
+- Integration gate: CI must pass (tests, lint, type checks) before merge
 
 ## Project Structure
 
@@ -54,79 +42,74 @@ specs/005-scr-01-spec/
 ├── research.md
 ├── data-model.md
 ├── quickstart.md
-├── contracts/
-│   └── login.openapi.yaml
-└── tasks.md
+└── contracts/
+    ├── login.openapi.yaml
+    └── signup.openapi.yaml
 ```
 
 ### Source Code (repository root)
 
 ```text
 backend/
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
 ├── src/
 │   ├── api/
 │   │   └── auth/
-│   │       ├── loginController.ts
-│   │       ├── loginRoutes.ts
-│   │       └── loginValidationMiddleware.ts
-│   ├── services/
-│   │   └── auth/
-│   │       ├── LoginService.ts
-│   │       ├── LoginGuardService.ts
-│   │       └── LoginMetricsService.ts
-│   ├── repositories/
-│   │   └── auth/
-│   │       └── loginRepository.ts
+│   ├── config/
 │   ├── domains/
 │   │   └── auth/
-│   │       └── LoginModels.ts
+│   ├── repositories/
+│   │   └── auth/
+│   ├── services/
+│   │   └── auth/
 │   └── utils/
-│       └── logging/
-│           └── authLogger.ts
+└── tests/
+    ├── contract/
+    │   └── auth/
+    └── integration/
 
 frontend/
 ├── src/
 │   ├── pages/
-│   │   └── LoginPage/
-│   │       ├── index.tsx
-│   │       ├── loginErrorMapper.ts
-│   │       ├── LoginFieldErrors.tsx
-│   │       ├── LoginPage.accessibility.test.tsx
-│   │       ├── LoginPage.failure.test.tsx
-│   │       ├── LoginPage.input-validation.test.tsx
-│   │       └── LoginPage.submission-state.test.tsx
-│   ├── routes/
-│   │   └── guards/
-│   │       └── requireAuth.tsx
+│   │   ├── LoginPage/
+│   │   └── SignupPage/
 │   ├── services/
 │   │   └── api/
-│   │       └── auth.ts
-│   └── domains/
-│       └── auth/
-│           └── LoginModels.ts
+│   └── routes/
 ```
 
-**Structure Decision**: 既存の認証実装パターンに合わせ、画面ロジックは `frontend/src/pages/LoginPage` に、認証処理は `backend/src/api/auth` と `backend/src/services/auth` に分割する。既存の `requireAuth.tsx` は未認証誘導の起点として再利用し、ログイン成功後の戻り先制御を追加する。
+**Structure Decision**: バックエンドの `repositories/auth` と `services/auth` を永続化の主な変更対象とし、フロントエンドは既存の API 呼び出し経路を維持する。DB スキーマは `backend/prisma/schema.prisma` を正とし、契約は `specs/005-scr-01-spec/contracts/login.openapi.yaml` と `specs/005-scr-01-spec/contracts/signup.openapi.yaml` を参照する。
 
-## Phase 0 Output (Research)
+## Phase 0: Research
 
-- `specs/005-scr-01-spec/research.md` を作成し、以下を確定:
-  - メール正規化（trim + lowercase）
-  - セッション有効期限（24時間）
-  - レート制限（email+IP, 5 req/min）
-  - 既ログイン時の自動リダイレクトと returnTo 優先
-  - HTTP は開発環境のみ許容、本番はHTTPS必須
-  - 401/429/500 の失敗分岐と再試行導線
+### Research Output
 
-## Phase 1 Output (Design & Contracts)
+- `research.md` に Prisma/PostgreSQL での永続化方針、トランザクション境界、重複メール対策、テスト方針を整理する
+- 既存のインメモリ `authStore` を置き換えるか、互換アダプタを挟むかを比較し、実装影響が最小の案を採用する
 
-- `specs/005-scr-01-spec/data-model.md` を作成
-- `specs/005-scr-01-spec/contracts/login.openapi.yaml` を作成
-- `specs/005-scr-01-spec/quickstart.md` を作成
-- `update-agent-context.ps1 -AgentType copilot` を実行
+## Phase 1: Design & Contracts
+
+### Data Model
+
+- `data-model.md` で `User`、`Session`、`AuthSession` の永続化/参照関係を定義する
+- メール正規化、ユニーク制約、セッション有効期限、状態遷移を明文化する
+
+### Contracts
+
+- 既存の `contracts/login.openapi.yaml` と新規の `contracts/signup.openapi.yaml` を基準とし、必要ならリポジトリ実装との差分だけを補足する
+
+### Quickstart
+
+- `quickstart.md` に Prisma マイグレーション、バックエンドテスト、認証フロー確認手順を記載する
+
+### Agent Context Update
+
+- `update-agent-context.ps1 -AgentType copilot` を実行して、現行スタックに Prisma/PostgreSQL の永続化方針を反映する
 
 ## Complexity Tracking
 
-- Violation: None
-- Why Needed: N/A
-- Simpler Alternative Rejected Because: N/A
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| None | N/A | N/A |

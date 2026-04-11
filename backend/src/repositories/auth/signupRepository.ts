@@ -33,7 +33,7 @@ export class SignupRepository {
     const tx = new SignupRepositoryTx(snapshot);
     const result = await operation(tx);
 
-    commitAuthStore(this.store, snapshot);
+    await commitAuthStore(this.store, snapshot);
 
     return result;
   }

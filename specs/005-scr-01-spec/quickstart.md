@@ -1,4 +1,35 @@
-# Quickstart: ログイン画面（SCR-01）
+# Quickstart: ログイン/サインアップ永続化
+
+## Prerequisites
+
+- Node.js と npm が利用できること
+- PostgreSQL 接続設定が `backend` 側で用意されていること
+- Prisma のマイグレーションを適用できること
+
+## Setup
+
+1. `backend` ディレクトリで依存関係を確認する
+2. Prisma スキーマを適用する
+3. backend のテストを実行する
+
+## Commands
+
+```bash
+cd backend
+npm test
+npm run lint
+```
+
+## Verification
+
+- サインアップ成功時に `User` と `Session` が DB に作成されることを確認する
+- ログイン成功時に既存 `User` を参照し、新しい `Session` が発行されることを確認する
+- 重複メールは登録失敗になることを確認する
+
+## Notes
+
+- 既存の API 契約は `specs/005-scr-01-spec/contracts/login.openapi.yaml` を参照する
+- UI 変更が必要な場合は、別途 frontend 側の確認を追加する# Quickstart: ログイン画面（SCR-01）
 
 ## 1. 前提
 

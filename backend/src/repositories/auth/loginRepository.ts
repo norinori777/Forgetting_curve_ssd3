@@ -25,7 +25,7 @@ export class LoginRepository {
     const snapshot = cloneAuthStore(this.store);
     const tx = new LoginRepositoryTx(snapshot);
     const result = await operation(tx);
-    commitAuthStore(this.store, snapshot);
+    await commitAuthStore(this.store, snapshot);
     return result;
   }
 }
