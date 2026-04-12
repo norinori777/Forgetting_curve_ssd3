@@ -17,6 +17,9 @@ export type PrismaTransactionClientLike = {
   session: {
     upsert: (args: unknown) => Promise<unknown>;
   };
+  card: {
+    upsert: (args: unknown) => Promise<unknown>;
+  };
 };
 
 export type PrismaUserRecord = {
@@ -35,12 +38,34 @@ export type PrismaSessionRecord = {
   state: string;
 };
 
+export type PrismaCardRecord = {
+  id: string;
+  requestId: string;
+  userId: string;
+  title: string;
+  question: string;
+  answer: string | null;
+  memo: string | null;
+  labels: string[];
+  firstReviewAt: Date;
+  secondReviewAt: Date;
+  thirdReviewAt: Date;
+  fourthReviewAt: Date;
+  reviewTimezone: string;
+  reviewPolicyVersion: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type PrismaClientLike = {
   user: {
     findMany: () => Promise<PrismaUserRecord[]>;
   };
   session: {
     findMany: () => Promise<PrismaSessionRecord[]>;
+  };
+  card: {
+    findMany: () => Promise<PrismaCardRecord[]>;
   };
   $transaction: <T>(operation: (transaction: PrismaTransactionClientLike) => Promise<T>) => Promise<T>;
 };

@@ -7,18 +7,10 @@ import { isLoginSubmissionStateDesignValid } from "../src/pages/LoginPage/LoginP
 import { assertLoginSuccessScenario } from "../src/pages/LoginPage/LoginPage.success.test.js";
 import { hasExpectedLoginValidationMatrix } from "../src/pages/LoginPage/LoginPage.validation.test.js";
 import { isLoginValidationBoundaryMatrixValid } from "../src/pages/LoginPage/loginValidation.test.js";
-import {
-  isAccessibilityExpectationMet
-} from "../src/pages/SignupPage/SignupPage.accessibility.test.js";
-import {
-  isFailureMappingValid
-} from "../src/pages/SignupPage/SignupPage.failure.test.js";
-import {
-  isInputRetentionExpectationValid
-} from "../src/pages/SignupPage/SignupPage.input-retention.test.js";
-import {
-  isSubmissionStateDesignValid
-} from "../src/pages/SignupPage/SignupPage.submission-state.test.js";
+import { isAccessibilityExpectationMet as isSignupAccessibilityExpectationMet } from "../src/pages/SignupPage/SignupPage.accessibility.test.js";
+import { isFailureMappingValid } from "../src/pages/SignupPage/SignupPage.failure.test.js";
+import { isInputRetentionExpectationValid as isSignupInputRetentionExpectationValid } from "../src/pages/SignupPage/SignupPage.input-retention.test.js";
+import { isSubmissionStateDesignValid as isSignupSubmissionStateDesignValid } from "../src/pages/SignupPage/SignupPage.submission-state.test.js";
 import {
   assertSignupSuccessScenario
 } from "../src/pages/SignupPage/SignupPage.success.test.js";
@@ -28,6 +20,10 @@ import {
 import {
   isValidationBoundaryMatrixValid
 } from "../src/pages/SignupPage/signupValidation.test.js";
+import { isAccessibilityExpectationMet as isCardAccessibilityExpectationMet } from "../src/pages/CardRegistrationPage/CardRegistrationPage.accessibility.test.js";
+import { isInputRetentionExpectationValid as isCardInputRetentionExpectationValid } from "../src/pages/CardRegistrationPage/CardRegistrationPage.input-retention.test.js";
+import { isSubmissionStateDesignValid as isCardSubmissionStateDesignValid } from "../src/pages/CardRegistrationPage/CardRegistrationPage.submission-state.test.js";
+import { hasExpectedCardValidationMatrix } from "../src/pages/CardRegistrationPage/CardRegistrationPage.validation.test.js";
 
 const cases: Array<[string, boolean]> = [
   ["login success scenario", assertLoginSuccessScenario()],
@@ -38,12 +34,16 @@ const cases: Array<[string, boolean]> = [
   ["login failure mapping", isLoginFailureMappingValid],
   ["login input retention", isLoginInputRetentionExpectationValid],
   ["signup success scenario", assertSignupSuccessScenario()],
-  ["submission state design", isSubmissionStateDesignValid],
-  ["accessibility expectations", isAccessibilityExpectationMet],
+  ["signup submission state design", isSignupSubmissionStateDesignValid],
+  ["signup accessibility expectations", isSignupAccessibilityExpectationMet],
   ["validation boundary matrix", isValidationBoundaryMatrixValid],
   ["validation error keys", hasExpectedValidationErrorKeys()],
   ["failure mapping", isFailureMappingValid],
-  ["input retention", isInputRetentionExpectationValid]
+  ["signup input retention", isSignupInputRetentionExpectationValid],
+  ["card validation matrix", hasExpectedCardValidationMatrix()],
+  ["card submission state design", isCardSubmissionStateDesignValid],
+  ["card accessibility expectations", isCardAccessibilityExpectationMet],
+  ["card input retention", isCardInputRetentionExpectationValid()]
 ];
 
 for (const [name, passed] of cases) {

@@ -1,0 +1,191 @@
+openapi: 3.0.3
+info:
+  title: Card Registration API
+  version: 1.0.0
+  description: Contract for card registration preview and final creation.
+servers:
+  - url: https://api.example.com
+paths:
+  /cards/preview:
+    post:
+      summary: Validate a card draft and return the initial review schedule
+      operationId: previewCardDraft
+      tags:
+        - Cards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDraftRequest'
+      responses:
+        '200':
+          description: Draft is valid and a review schedule was computed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardPreviewSuccess'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Session is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden for this context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Preview failed unexpectedly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /cards:
+    post:
+      summary: Create a card after confirmation
+      operationId: createCard
+      tags:
+        - Cards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDraftRequest'
+      responses:
+        '201':
+          description: Card created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardCreateSuccess'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Session is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden for this context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Create failed unexpectedly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CardDraftRequest:
+      type: object
+      required:
+        - title
+        - question
+      properties:
+        title:
+          type: string
+          maxLength: 100
+        question:
+          type: string
+          maxLength: 500
+        answer:
+          type: string
+          maxLength: 500
+        memo:
+          type: string
+          maxLength: 500
+        labels:
+          type: array
+          items:
+            type: string
+    CardPreviewSuccess:
+      type: object
+      required:
+        - isValid
+        - reviewSchedule
+      properties:
+        isValid:
+          type: boolean
+          example: true
+        reviewSchedule:
+          $ref: '#/components/schemas/ReviewSchedule'
+    CardCreateSuccess:
+      type: object
+      required:
+        - cardId
+        - redirectTo
+        - reviewSchedule
+      properties:
+        cardId:
+          type: string
+        redirectTo:
+          type: string
+          example: /dashboard
+        reviewSchedule:
+          $ref: '#/components/schemas/ReviewSchedule'
+    ReviewSchedule:
+      type: object
+      required:
+        - firstReviewAt
+        - secondReviewAt
+        - thirdReviewAt
+        - fourthReviewAt
+        - timezone
+        - policyVersion
+      properties:
+        firstReviewAt:
+          type: string
+          format: date-time
+        secondReviewAt:
+          type: string
+          format: date-time
+        thirdReviewAt:
+          type: string
+          format: date-time
+        fourthReviewAt:
+          type: string
+          format: date-time
+        timezone:
+          type: string
+          example: Asia/Tokyo
+        policyVersion:
+          type: string
+          example: initial-v1
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - message
+      properties:
+        errorCode:
+          type: string
+          enum:
+            - VALIDATION_FAILED
+            - AUTH_REQUIRED
+            - FORBIDDEN
+            - CARD_PREVIEW_FAILED
+            - CARD_CREATE_FAILED
+        message:
+          type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: string

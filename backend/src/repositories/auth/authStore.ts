@@ -24,6 +24,29 @@ export const cloneAuthStore = (source: AuthStoreState): AuthStoreState => ({
   prismaClient: source.prismaClient
 });
 
+export const findUserById = (store: AuthStoreState, userId: string): UserAccount | undefined => store.usersById.get(userId);
+
+export const findSessionById = (store: AuthStoreState, sessionId: string): UserSession | undefined => store.sessionsById.get(sessionId);
+
+export const resolveAuthenticatedUser = (
+  store: AuthStoreState,
+  sessionId: string
+): { user: UserAccount; session: UserSession } | undefined => {
+  const session = findSessionById(store, sessionId);
+
+  if (!session) {
+    return undefined;
+  }
+
+  const user = findUserById(store, session.userId);
+
+  if (!user) {
+    return undefined;
+  }
+
+  return { user, session };
+};
+
 const mapUserRecord = (record: PrismaUserRecord): UserAccount => ({
   userId: record.id,
   normalizedEmail: record.normalizedEmail,

@@ -2,18 +2,22 @@ import "dotenv/config";
 import express from "express";
 import { buildLoginRoutes } from "./api/auth/loginRoutes.js";
 import { buildSignupRoutes } from "./api/auth/signupRoutes.js";
+import { buildCardRoutes } from "./api/cards/cardRoutes.js";
 import { LoginController } from "./api/auth/loginController.js";
 import { SignupController } from "./api/auth/signupController.js";
+import { CardController } from "./api/cards/cardController.js";
 import { corsMiddleware } from "./api/middleware/cors.js";
 import { createPrismaAuthStore } from "./repositories/auth/authStore.js";
 import { LoginRepository } from "./repositories/auth/loginRepository.js";
 import { SignupRepository } from "./repositories/auth/signupRepository.js";
+import { CardRepository, createPrismaCardStore } from "./repositories/cards/cardRepository.js";
 import { LoginGuardService } from "./services/auth/LoginGuardService.js";
 import { LoginMetricsService } from "./services/auth/LoginMetricsService.js";
 import { LoginService } from "./services/auth/LoginService.js";
 import { SignupGuardService } from "./services/auth/SignupGuardService.js";
 import { SignupMetricsService } from "./services/auth/SignupMetricsService.js";
 import { SignupService } from "./services/auth/SignupService.js";
+import { CardService } from "./services/cards/CardService.js";
 
 const app = express();
 const port = Number(process.env.PORT ?? 3000);
@@ -24,8 +28,10 @@ const bootstrap = async (): Promise<void> => {
   app.use(express.json());
 
   const authStore = await createPrismaAuthStore();
+  const cardStore = await createPrismaCardStore();
   const signupRepository = new SignupRepository(authStore);
   const loginRepository = new LoginRepository(authStore);
+  const cardRepository = new CardRepository(cardStore);
   const signupGuardService = new SignupGuardService();
   const signupMetricsService = new SignupMetricsService();
   const signupService = new SignupService(signupRepository, signupGuardService, signupMetricsService);
@@ -34,9 +40,12 @@ const bootstrap = async (): Promise<void> => {
   const loginMetricsService = new LoginMetricsService();
   const loginService = new LoginService(loginRepository, loginGuardService, loginMetricsService);
   const loginController = new LoginController(loginService);
+  const cardService = new CardService(cardRepository);
+  const cardController = new CardController(cardService);
 
   app.use("/auth", buildSignupRoutes(signupController));
   app.use("/auth", buildLoginRoutes(loginController));
+  app.use("/cards", buildCardRoutes(cardController, authStore));
 
   app.get("/health", (_req, res) => {
     res.status(200).json({ status: "ok" });
