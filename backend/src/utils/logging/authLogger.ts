@@ -4,6 +4,7 @@ type AuthLogEvent = {
   event: string;
   requestId?: string;
   normalizedEmail?: string;
+  userId?: string;
   reason?: string;
   ip?: string;
   errorCode?: string;
@@ -26,6 +27,7 @@ const formatEvent = (payload: AuthLogEvent): Record<string, string> => ({
   event: payload.event,
   requestId: payload.requestId ?? "n/a",
   normalizedEmailMasked: redactEmail(payload.normalizedEmail) ?? "n/a",
+  userId: payload.userId ?? "n/a",
   ip: payload.ip ?? "n/a",
   reason: payload.reason ?? "n/a",
   errorCode: payload.errorCode ?? "n/a"
