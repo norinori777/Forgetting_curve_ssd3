@@ -1,6 +1,5 @@
 import type { PrismaClientLike, PrismaSessionRecord, PrismaTransactionClientLike, PrismaUserRecord } from "../../lib/prisma.js";
 import type { UserAccount, UserSession } from "../../domains/auth/SignupModels.js";
-import { prismaClient } from "../../lib/prisma.js";
 
 export type AuthStoreState = {
   usersById: Map<string, UserAccount>;
@@ -42,6 +41,7 @@ const mapSessionRecord = (record: PrismaSessionRecord): UserSession => ({
 });
 
 export const createPrismaAuthStore = async (): Promise<AuthStoreState> => {
+  const { prismaClient } = await import("../../lib/prisma.js");
   const [userRecords, sessionRecords] = await Promise.all([
     prismaClient.user.findMany(),
     prismaClient.session.findMany()
