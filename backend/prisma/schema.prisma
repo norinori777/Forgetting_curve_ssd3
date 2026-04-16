@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id              String    @id @default(uuid()) @db.Uuid
+  normalizedEmail String    @unique
+  passwordHash    String
+  status          String    @default("active")
+  createdAt       DateTime  @default(now())
+  sessions        Session[]
+  cards           Card[]
+
+  @@index([normalizedEmail])
+}
+
+model Session {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  issuedAt  DateTime @default(now())
+  expiresAt DateTime
+  state     String   @default("active")
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Card {
+  id                  String   @id @default(uuid()) @db.Uuid
+  requestId           String   @unique
+  userId              String   @db.Uuid
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title               String
+  question            String
+  answer              String?
+  memo                String?
+  labels              String[]  @default([])
+  firstReviewAt       DateTime
+  secondReviewAt      DateTime
+  thirdReviewAt       DateTime
+  fourthReviewAt      DateTime
+  reviewTimezone      String
+  reviewPolicyVersion String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@index([userId])
+  @@index([requestId])
+}

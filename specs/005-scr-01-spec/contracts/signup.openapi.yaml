@@ -1,0 +1,154 @@
+openapi: 3.0.3
+info:
+  title: Signup API
+  version: 1.0.0
+  description: Contract for SCR-01 signup with account creation and session start.
+servers:
+  - url: https://api.example.com
+paths:
+  /auth/signup:
+    post:
+      summary: Register a user and start session
+      operationId: signupAccount
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '201':
+          description: Signup succeeded and session started
+          headers:
+            Set-Cookie:
+              description: Session cookie (24h)
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupSuccess'
+        '202':
+          description: Signup canceled before completion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupCanceled'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                validation:
+                  value:
+                    errorCode: VALIDATION_FAILED
+                    message: 入力内容を確認してください。
+                    fieldErrors:
+                      email: メールアドレスの形式を確認してください。
+                      passwordConfirm: 確認用パスワードが一致しません。
+        '409':
+          description: Duplicate email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                duplicate_email:
+                  value:
+                    errorCode: DUPLICATE_EMAIL
+                    message: このメールアドレスは既に登録されています。
+        '429':
+          description: Rate limit exceeded
+          headers:
+            Retry-After:
+              description: Seconds until next retry
+              schema:
+                type: integer
+                minimum: 1
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                too_many_requests:
+                  value:
+                    errorCode: RATE_LIMIT_EXCEEDED
+                    message: しばらく待ってから再試行してください。
+        '500':
+          description: Signup failed without partial success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                server_error:
+                  value:
+                    errorCode: SIGNUP_FAILED
+                    message: 登録に失敗しました。再試行してください。
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      required:
+        - email
+        - password
+        - passwordConfirm
+      properties:
+        email:
+          type: string
+          format: email
+          description: Raw user email; backend applies trim+lowercase normalization.
+        password:
+          type: string
+          minLength: 8
+          maxLength: 64
+          description: Password policy is length only (8-64), no character class requirements.
+        passwordConfirm:
+          type: string
+          description: Must match password.
+    SignupSuccess:
+      type: object
+      required:
+        - userId
+        - redirectTo
+        - sessionExpiresInSeconds
+      properties:
+        userId:
+          type: string
+        redirectTo:
+          type: string
+          example: /dashboard
+        sessionExpiresInSeconds:
+          type: integer
+          example: 86400
+    SignupCanceled:
+      type: object
+      required:
+        - canceled
+      properties:
+        canceled:
+          type: boolean
+          example: true
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - message
+      properties:
+        errorCode:
+          type: string
+          enum:
+            - VALIDATION_FAILED
+            - DUPLICATE_EMAIL
+            - RATE_LIMIT_EXCEEDED
+            - SIGNUP_FAILED
+        message:
+          type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: string
