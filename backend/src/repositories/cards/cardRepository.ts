@@ -42,6 +42,10 @@ const mapCardRecord = (record: PrismaCardRecord): CardRecord => ({
 });
 
 export const createPrismaCardStore = async (): Promise<CardRepositoryState> => {
+  if (!process.env.DATABASE_URL) {
+    return createCardStore();
+  }
+
   const { prismaClient } = await import("../../lib/prisma.js");
   const records = await prismaClient.card.findMany();
 

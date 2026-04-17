@@ -11,6 +11,14 @@ const DEFAULT_SIGNUP_RATE_LIMIT_PER_MINUTE = 5;
 const DEFAULT_LOGIN_RATE_LIMIT_PER_MINUTE = 5;
 const DEFAULT_CORS_ALLOWED_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"];
 
+const parseRequireHttps = (value: string | undefined): boolean => {
+  if (value !== undefined) {
+    return value.toLowerCase() !== "false";
+  }
+
+  return process.env.NODE_ENV === "production";
+};
+
 const parseAllowedOrigins = (value: string | undefined): string[] => {
   if (!value) {
     return DEFAULT_CORS_ALLOWED_ORIGINS;
@@ -32,6 +40,6 @@ export const authConfig: AuthConfig = {
   loginRateLimitPerMinute: Number(
     process.env.LOGIN_RATE_LIMIT_PER_MINUTE ?? DEFAULT_LOGIN_RATE_LIMIT_PER_MINUTE
   ),
-  requireHttps: (process.env.REQUIRE_HTTPS ?? "true").toLowerCase() !== "false",
+  requireHttps: parseRequireHttps(process.env.REQUIRE_HTTPS),
   corsAllowedOrigins: parseAllowedOrigins(process.env.CORS_ALLOWED_ORIGINS)
 };

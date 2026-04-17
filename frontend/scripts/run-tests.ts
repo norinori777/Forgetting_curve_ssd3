@@ -24,8 +24,20 @@ import { isAccessibilityExpectationMet as isCardAccessibilityExpectationMet } fr
 import { isInputRetentionExpectationValid as isCardInputRetentionExpectationValid } from "../src/pages/CardRegistrationPage/CardRegistrationPage.input-retention.test.js";
 import { isSubmissionStateDesignValid as isCardSubmissionStateDesignValid } from "../src/pages/CardRegistrationPage/CardRegistrationPage.submission-state.test.js";
 import { hasExpectedCardValidationMatrix } from "../src/pages/CardRegistrationPage/CardRegistrationPage.validation.test.js";
+import { isDefaultDashboardRenderingValid } from "../src/App.base-screen.test.js";
+import { isHeaderNavigationIntegrationValid } from "../src/App.navigation.test.js";
+import { isBaseLayoutPageSlotPlacementValid } from "../src/components/layout/BaseLayout.test.js";
+import { isSharedHeaderVisibleAcrossAuthenticatedPages } from "../src/components/layout/BaseLayout.persistence.test.js";
+import { areHeaderLinksCorrect } from "../src/components/navigation/HeaderMenu.test.js";
+import { isHeaderAccessibilityExpectationMet } from "../src/components/navigation/HeaderMenu.accessibility.test.js";
 
 const cases: Array<[string, boolean]> = [
+  ["base screen default dashboard", isDefaultDashboardRenderingValid()],
+  ["base screen navigation integration", isHeaderNavigationIntegrationValid()],
+  ["base layout page slot placement", isBaseLayoutPageSlotPlacementValid()],
+  ["shared header persistence", isSharedHeaderVisibleAcrossAuthenticatedPages()],
+  ["header link labels and destinations", areHeaderLinksCorrect()],
+  ["header accessibility expectations", isHeaderAccessibilityExpectationMet()],
   ["login success scenario", assertLoginSuccessScenario()],
   ["login submission state design", isLoginSubmissionStateDesignValid],
   ["login accessibility expectations", isLoginAccessibilityExpectationMet],

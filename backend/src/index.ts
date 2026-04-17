@@ -1,4 +1,5 @@
 import "dotenv/config";
+import net from "node:net";
 import express from "express";
 import { buildLoginRoutes } from "./api/auth/loginRoutes.js";
 import { buildSignupRoutes } from "./api/auth/signupRoutes.js";
@@ -20,7 +21,33 @@ import { SignupService } from "./services/auth/SignupService.js";
 import { CardService } from "./services/cards/CardService.js";
 
 const app = express();
-const port = Number(process.env.PORT ?? 3000);
+const preferredPort = Number(process.env.PORT ?? 3000);
+
+const isPortAvailable = async (candidatePort: number): Promise<boolean> =>
+  await new Promise<boolean>((resolve) => {
+    const server = net.createServer();
+
+    server.unref();
+    server.once("error", () => {
+      resolve(false);
+    });
+    server.once("listening", () => {
+      server.close(() => {
+        resolve(true);
+      });
+    });
+    server.listen(candidatePort);
+  });
+
+const resolveListenPort = async (startPort: number): Promise<number> => {
+  for (let candidatePort = startPort; candidatePort < startPort + 20; candidatePort += 1) {
+    if (await isPortAvailable(candidatePort)) {
+      return candidatePort;
+    }
+  }
+
+  return startPort;
+};
 
 const bootstrap = async (): Promise<void> => {
   app.set("trust proxy", true);
@@ -51,8 +78,10 @@ const bootstrap = async (): Promise<void> => {
     res.status(200).json({ status: "ok" });
   });
 
-  app.listen(port, () => {
-    console.log(`Backend server listening on port ${port}`);
+  const listenPort = await resolveListenPort(preferredPort);
+
+  app.listen(listenPort, () => {
+    console.log(`Backend server listening on port ${listenPort}`);
   });
 };
 

@@ -2,6 +2,7 @@ import { useState, type CSSProperties, type FormEvent } from "react";
 import { CardRegistrationErrorSummary } from "./CardRegistrationErrorSummary";
 import { CardRegistrationFieldErrorsView } from "./CardRegistrationFieldErrors";
 import { useCardRegistration } from "./useCardRegistration";
+import BaseLayout from "../../components/layout/BaseLayout";
 
 const formShellStyle: CSSProperties = {
   width: "100%",
@@ -70,15 +71,7 @@ export default function CardRegistrationPage() {
   };
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "linear-gradient(130deg, #f2f6ff, #eefcf7)",
-        padding: "24px 12px",
-        display: "grid",
-        alignItems: "center"
-      }}
-    >
+    <BaseLayout activePage="cardRegistration">
       <section style={formShellStyle}>
         <h1 style={{ margin: 0, fontSize: "clamp(1.3rem, 5vw, 1.8rem)" }}>カード登録</h1>
         <p style={{ marginTop: 8, color: "#344054" }}>入力内容を確認してから復習予定を表示し、そのまま保存できます。</p>
@@ -161,6 +154,6 @@ export default function CardRegistrationPage() {
           {statusText}
         </p>
       </section>
-    </main>
+    </BaseLayout>
   );
 }

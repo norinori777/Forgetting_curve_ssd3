@@ -64,6 +64,10 @@ const mapSessionRecord = (record: PrismaSessionRecord): UserSession => ({
 });
 
 export const createPrismaAuthStore = async (): Promise<AuthStoreState> => {
+  if (!process.env.DATABASE_URL) {
+    return createAuthStore();
+  }
+
   const { prismaClient } = await import("../../lib/prisma.js");
   const [userRecords, sessionRecords] = await Promise.all([
     prismaClient.user.findMany(),
