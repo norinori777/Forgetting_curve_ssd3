@@ -1,0 +1,5 @@
+import { BASE_SCREEN_PATHS, getBaseScreenPath, resolveAppRouteKey } from "./baseScreenRoutes";
+
+export const isBaseScreenRouteResolutionStable = (): boolean => {
+  return resolveAppRouteKey(BASE_SCREEN_PATHS.dashboard) === "dashboard" && resolveAppRouteKey(BASE_SCREEN_PATHS.cardList) === "cardList" && resolveAppRouteKey(BASE_SCREEN_PATHS.review) === "review" && resolveAppRouteKey(BASE_SCREEN_PATHS.settings) === "settings" && resolveAppRouteKey(BASE_SCREEN_PATHS.cardRegistration) === "cardRegistration" && resolveAppRouteKey(BASE_SCREEN_PATHS.login) === "login" && resolveAppRouteKey(BASE_SCREEN_PATHS.signup) === "signup" && getBaseScreenPath("dashboard") === BASE_SCREEN_PATHS.dashboard && getBaseScreenPath("cardList") === BASE_SCREEN_PATHS.cardList && getBaseScreenPath("review") === BASE_SCREEN_PATHS.review && getBaseScreenPath("settings") === BASE_SCREEN_PATHS.settings && getBaseScreenPath("cardRegistration") === BASE_SCREEN_PATHS.cardRegistration;
+};

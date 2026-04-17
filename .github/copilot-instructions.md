@@ -26,9 +26,9 @@ npm test; npm run lint
 TypeScript 5.0: Follow standard conventions
 
 ## Recent Changes
+- 008-plain-page-layout: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 - 007-base-screen: Added TypeScript 5.0 + React, Tailwind CSS, Vite, 既存の path-based page selection（`frontend/src/App.tsx`）
 - 006-card-registration: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
-- 005-scr-01-spec: Added TypeScript 5.0 + React, Node.js, Express.js, Prisma, Tailwind CSS
 
 
 <!-- MANUAL ADDITIONS START -->
