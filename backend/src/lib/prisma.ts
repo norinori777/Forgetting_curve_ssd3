@@ -19,6 +19,7 @@ export type PrismaTransactionClientLike = {
   };
   card: {
     upsert: (args: unknown) => Promise<unknown>;
+    deleteMany: (args: unknown) => Promise<unknown>;
   };
 };
 
@@ -66,6 +67,7 @@ export type PrismaClientLike = {
   };
   card: {
     findMany: () => Promise<PrismaCardRecord[]>;
+    deleteMany: (args: unknown) => Promise<unknown>;
   };
   $transaction: <T>(operation: (transaction: PrismaTransactionClientLike) => Promise<T>) => Promise<T>;
 };

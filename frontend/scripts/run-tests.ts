@@ -26,6 +26,8 @@ import { isSubmissionStateDesignValid as isCardSubmissionStateDesignValid } from
 import { hasExpectedCardValidationMatrix } from "../src/pages/CardRegistrationPage/CardRegistrationPage.validation.test.js";
 import { isDefaultDashboardRenderingValid } from "../src/App.base-screen.test.js";
 import { isHeaderNavigationIntegrationValid } from "../src/App.navigation.test.js";
+import { hasExpectedCardListSearchControls } from "../src/pages/CardListPage/CardListPage.search.test.js";
+import { hasExpectedCardListActionControls } from "../src/pages/CardListPage/CardListPage.actions.test.js";
 import { isBaseLayoutPageSlotPlacementValid } from "../src/components/layout/BaseLayout.test.js";
 import { isSharedHeaderVisibleAcrossAuthenticatedPages } from "../src/components/layout/BaseLayout.persistence.test.js";
 import { areHeaderLinksCorrect } from "../src/components/navigation/HeaderMenu.test.js";
@@ -61,6 +63,8 @@ const cases: Array<[string, boolean]> = [
   ["card submission state design", isCardSubmissionStateDesignValid],
   ["card accessibility expectations", isCardAccessibilityExpectationMet],
   ["card input retention", isCardInputRetentionExpectationValid()],
+  ["card list search controls", hasExpectedCardListSearchControls()],
+  ["card list action controls", hasExpectedCardListActionControls()],
   ["dashboard plain layout", isDashboardPagePlainLayoutValid()],
   ["card list plain layout", isCardListPagePlainLayoutValid()],
   ["review plain layout", isReviewPagePlainLayoutValid()],

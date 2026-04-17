@@ -25,7 +25,7 @@ export class LoginController {
       authLogger.log("info", { event: "login_success_response", requestId, ip: clientIp });
 
       const cookieParts = [
-        `session=request-${requestId}`,
+        `session=${requestId}`,
         "HttpOnly",
         `Max-Age=${authConfig.sessionTtlSeconds}`,
         "Path=/"

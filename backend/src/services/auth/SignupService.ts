@@ -72,7 +72,8 @@ export class SignupService {
         await tx.createSession({
           userId: user.userId,
           issuedAt: now,
-          ttlSeconds: authConfig.sessionTtlSeconds
+          ttlSeconds: authConfig.sessionTtlSeconds,
+          sessionId: input.requestId
         });
 
         return {

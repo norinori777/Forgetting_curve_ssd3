@@ -48,12 +48,71 @@ export type CardCreateResponse = {
   reviewSchedule: ReviewSchedule;
 };
 
+export type CardListQuery = {
+  userId: string;
+  search?: string;
+  labels?: string[];
+  cursor?: string;
+  limit?: number;
+};
+
+export type CardListItem = {
+  cardId: string;
+  title: string;
+  question: string;
+  answer: string | null;
+  memo: string | null;
+  labels: string[];
+  firstReviewAt: Date;
+  secondReviewAt: Date;
+  thirdReviewAt: Date;
+  fourthReviewAt: Date;
+  reviewTimezone: string;
+  reviewPolicyVersion: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CardListResponse = {
+  items: CardListItem[];
+  nextCursor: string | null;
+};
+
+export type CardBulkLabelUpdateRequest = {
+  cardIds: string[];
+  labels: string[];
+};
+
+export type CardBulkLabelUpdateResponse = {
+  updatedCount: number;
+};
+
+export type CardDeleteResponse = {
+  deletedCardId: string;
+};
+
+export type CardExportFilters = {
+  search?: string;
+  labels?: string[];
+};
+
+export type CardExportResponse = {
+  exportedAt: string;
+  filters: CardExportFilters;
+  cards: CardListItem[];
+};
+
 export type CardErrorCode =
   | "VALIDATION_FAILED"
   | "AUTH_REQUIRED"
   | "FORBIDDEN"
   | "CARD_PREVIEW_FAILED"
   | "CARD_CREATE_FAILED"
+  | "CARD_LIST_FAILED"
+  | "CARD_BULK_UPDATE_FAILED"
+  | "CARD_DELETE_FAILED"
+  | "CARD_EXPORT_FAILED"
+  | "CARD_NOT_FOUND"
   | "HTTPS_REQUIRED";
 
 export type CardErrorResponse = {
@@ -84,6 +143,31 @@ export type CardRecord = {
   reviewPolicyVersion: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export const mapCardRecordToListItem = (record: CardRecord): CardListItem => ({
+  cardId: record.cardId,
+  title: record.title,
+  question: record.question,
+  answer: record.answer,
+  memo: record.memo,
+  labels: [...record.labels],
+  firstReviewAt: record.firstReviewAt,
+  secondReviewAt: record.secondReviewAt,
+  thirdReviewAt: record.thirdReviewAt,
+  fourthReviewAt: record.fourthReviewAt,
+  reviewTimezone: record.reviewTimezone,
+  reviewPolicyVersion: record.reviewPolicyVersion,
+  createdAt: record.createdAt,
+  updatedAt: record.updatedAt
+});
+
+export const normalizeCardLabels = (labels: string[]): string[] => {
+  return Array.from(new Set(labels.map((label) => label.trim()).filter((label) => label.length > 0)));
+};
+
+export const isAllowedCardLabel = (label: string): boolean => {
+  return CARD_LABEL_OPTIONS.includes(label as CardLabelOption);
 };
 
 const trimValue = (value: string | undefined): string | undefined => {

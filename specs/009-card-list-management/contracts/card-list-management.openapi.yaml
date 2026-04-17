@@ -1,0 +1,331 @@
+openapi: 3.0.3
+info:
+  title: Card List Management API
+  version: 1.0.0
+  description: Contract for card listing, filtering, bulk label assignment, deletion, and export.
+servers:
+  - url: https://api.example.com
+paths:
+  /cards:
+    get:
+      summary: List cards owned by the current user
+      operationId: listCards
+      tags:
+        - Cards
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Partial match query across title, question, and answer
+        - name: labels
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          description: Label filter values
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Cursor for infinite scroll pagination
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+      responses:
+        '200':
+          description: Cards returned successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardListResponse'
+        '401':
+          description: Session is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden for this context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Listing failed unexpectedly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Add labels to multiple cards owned by the current user
+      operationId: bulkLabelCards
+      tags:
+        - Cards
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkLabelUpdateRequest'
+      responses:
+        '200':
+          description: Labels were applied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkLabelUpdateResponse'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Session is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden for this context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Bulk update failed unexpectedly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /cards/export:
+    get:
+      summary: Export cards owned by the current user as a single JSON file
+      operationId: exportCards
+      tags:
+        - Cards
+      parameters:
+        - name: q
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: labels
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Optional cursor when exporting a filtered subset
+      responses:
+        '200':
+          description: Export file generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardExportResponse'
+        '401':
+          description: Session is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden for this context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Export failed unexpectedly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /cards/{cardId}:
+    delete:
+      summary: Delete a single card owned by the current user
+      operationId: deleteCard
+      tags:
+        - Cards
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Card deleted successfully
+        '401':
+          description: Session is missing or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden for this context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Card not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Delete failed unexpectedly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    CardListItem:
+      type: object
+      required:
+        - cardId
+        - title
+        - question
+        - labels
+        - createdAt
+        - updatedAt
+      properties:
+        cardId:
+          type: string
+        title:
+          type: string
+        question:
+          type: string
+        answer:
+          type: string
+          nullable: true
+        memo:
+          type: string
+          nullable: true
+        labels:
+          type: array
+          items:
+            type: string
+        firstReviewAt:
+          type: string
+          format: date-time
+        secondReviewAt:
+          type: string
+          format: date-time
+        thirdReviewAt:
+          type: string
+          format: date-time
+        fourthReviewAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CardListResponse:
+      type: object
+      required:
+        - items
+        - nextCursor
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardListItem'
+        nextCursor:
+          type: string
+          nullable: true
+    BulkLabelUpdateRequest:
+      type: object
+      required:
+        - cardIds
+        - labels
+      properties:
+        cardIds:
+          type: array
+          minItems: 1
+          items:
+            type: string
+        labels:
+          type: array
+          minItems: 1
+          items:
+            type: string
+    BulkLabelUpdateResponse:
+      type: object
+      required:
+        - updatedCount
+      properties:
+        updatedCount:
+          type: integer
+          minimum: 0
+    CardExportResponse:
+      type: object
+      required:
+        - exportedAt
+        - filters
+        - cards
+      properties:
+        exportedAt:
+          type: string
+          format: date-time
+        filters:
+          type: object
+          properties:
+            q:
+              type: string
+              nullable: true
+            labels:
+              type: array
+              items:
+                type: string
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardListItem'
+    ErrorResponse:
+      type: object
+      required:
+        - errorCode
+        - message
+      properties:
+        errorCode:
+          type: string
+          enum:
+            - VALIDATION_FAILED
+            - AUTH_REQUIRED
+            - FORBIDDEN
+            - CARD_LIST_FAILED
+            - BULK_UPDATE_FAILED
+            - EXPORT_FAILED
+            - DELETE_FAILED
+        message:
+          type: string
+        fieldErrors:
+          type: object
+          additionalProperties:
+            type: string

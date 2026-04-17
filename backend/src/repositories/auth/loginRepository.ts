@@ -6,6 +6,7 @@ type CreateSessionInput = {
   userId: string;
   issuedAt: Date;
   ttlSeconds: number;
+  sessionId?: string;
 };
 
 type TransactionState = AuthStoreState;
@@ -35,7 +36,7 @@ export class LoginRepositoryTx {
 
   async createSession(input: CreateSessionInput): Promise<UserSession> {
     const session: UserSession = {
-      sessionId: randomUUID(),
+      sessionId: input.sessionId ?? randomUUID(),
       userId: input.userId,
       issuedAt: input.issuedAt,
       expiresAt: new Date(input.issuedAt.getTime() + input.ttlSeconds * 1000),
