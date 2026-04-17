@@ -30,6 +30,11 @@ import { isBaseLayoutPageSlotPlacementValid } from "../src/components/layout/Bas
 import { isSharedHeaderVisibleAcrossAuthenticatedPages } from "../src/components/layout/BaseLayout.persistence.test.js";
 import { areHeaderLinksCorrect } from "../src/components/navigation/HeaderMenu.test.js";
 import { isHeaderAccessibilityExpectationMet } from "../src/components/navigation/HeaderMenu.accessibility.test.js";
+import { isDashboardPagePlainLayoutValid } from "../src/pages/DashboardPage/DashboardPage.layout.test.js";
+import { isCardListPagePlainLayoutValid } from "../src/pages/CardListPage/CardListPage.layout.test.js";
+import { isReviewPagePlainLayoutValid } from "../src/pages/ReviewPage/ReviewPage.layout.test.js";
+import { isSettingsPagePlainLayoutValid } from "../src/pages/SettingsPage/SettingsPage.layout.test.js";
+import { isBaseScreenRouteResolutionStable } from "../src/utils/baseScreenRoutes.test.js";
 
 const cases: Array<[string, boolean]> = [
   ["base screen default dashboard", isDefaultDashboardRenderingValid()],
@@ -55,7 +60,12 @@ const cases: Array<[string, boolean]> = [
   ["card validation matrix", hasExpectedCardValidationMatrix()],
   ["card submission state design", isCardSubmissionStateDesignValid],
   ["card accessibility expectations", isCardAccessibilityExpectationMet],
-  ["card input retention", isCardInputRetentionExpectationValid()]
+  ["card input retention", isCardInputRetentionExpectationValid()],
+  ["dashboard plain layout", isDashboardPagePlainLayoutValid()],
+  ["card list plain layout", isCardListPagePlainLayoutValid()],
+  ["review plain layout", isReviewPagePlainLayoutValid()],
+  ["settings plain layout", isSettingsPagePlainLayoutValid()],
+  ["base screen route resolution", isBaseScreenRouteResolutionStable()]
 ];
 
 for (const [name, passed] of cases) {
