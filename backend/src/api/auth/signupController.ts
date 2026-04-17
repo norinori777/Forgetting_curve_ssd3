@@ -37,7 +37,7 @@ export class SignupController {
       authLogger.log("info", { event: "signup_success_response", requestId, ip: clientIp });
 
       const cookieParts = [
-        `session=request-${requestId}`,
+        `session=${requestId}`,
         "HttpOnly",
         "Max-Age=86400",
         "Path=/"

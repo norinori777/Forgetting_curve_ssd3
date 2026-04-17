@@ -8,8 +8,12 @@ export const buildCardRoutes = (controller: CardController, authStore: AuthStore
   const router = Router();
   const cardAuthMiddleware = createCardAuthMiddleware(authStore);
 
+  router.get("/", requireHttps, cardAuthMiddleware, controller.list);
+  router.get("/export", requireHttps, cardAuthMiddleware, controller.export);
+  router.patch("/", requireHttps, cardAuthMiddleware, controller.bulkLabel);
   router.post("/preview", requireHttps, cardAuthMiddleware, controller.preview);
   router.post("/", requireHttps, cardAuthMiddleware, controller.create);
+  router.delete("/:cardId", requireHttps, cardAuthMiddleware, controller.delete);
 
   return router;
 };
