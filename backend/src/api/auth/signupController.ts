@@ -4,6 +4,7 @@ import type { SignupRequestBody } from "../../domains/auth/SignupModels.js";
 import { SignupService, SignupServiceError } from "../../services/auth/SignupService.js";
 import { authLogger } from "../../utils/logging/authLogger.js";
 import { SignupMetricsService } from "../../services/auth/SignupMetricsService.js";
+import { authConfig } from "../../config/authConfig.js";
 
 export class SignupController {
   constructor(
@@ -35,9 +36,20 @@ export class SignupController {
 
       authLogger.log("info", { event: "signup_success_response", requestId, ip: clientIp });
 
+      const cookieParts = [
+        `session=request-${requestId}`,
+        "HttpOnly",
+        "Max-Age=86400",
+        "Path=/"
+      ];
+
+      if (authConfig.requireHttps) {
+        cookieParts.push("Secure");
+      }
+
       res
         .status(201)
-        .setHeader("Set-Cookie", `session=request-${requestId}; HttpOnly; Max-Age=86400; Path=/; Secure`)
+        .setHeader("Set-Cookie", cookieParts.join("; "))
         .json(result);
     } catch (error) {
       if (error instanceof SignupServiceError) {
